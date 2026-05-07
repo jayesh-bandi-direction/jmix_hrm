@@ -23,6 +23,10 @@ repositories {
 
 dependencies {
 
+//    Add on - Italian Translation
+    implementation 'io.jmix.translations:jmix-translations-it'
+
+
 //    Add on - LDAP
     implementation 'io.jmix.ldap:jmix-ldap-starter'
 
@@ -58,7 +62,7 @@ dependencies {
 
 //    PostgreSQL driver
     runtimeOnly 'org.postgresql:postgresql:42.7.10'
-    
+
 // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     runtimeOnly 'com.mysql:mysql-connector-j:9.6.0'
 
