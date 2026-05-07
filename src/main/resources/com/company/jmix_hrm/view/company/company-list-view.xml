@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://com.company.jmix_hrm.entity/Company"
+      focusComponent="companiesDataGrid">
+
+    <data readOnly="true">
+        <collection id="companiesDc" class="com.company.jmix_hrm.entity.Company">
+            <fetchPlan extends="_base"/>
+            <loader id="companiesDl">
+                <query>
+                    <![CDATA[select c from Company c]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+        </urlQueryParameters>
+    </facets>
+
+    <layout>
+        <!--        Adding User Fragment -->
+        <hbox width="100%">
+            <fragment class="com.company.jmix_hrm.view.user.UserFragment" id="userFragment"/>
+        </hbox>
+
+        <genericFilter dataLoader="companiesDl" id="genericFilter">
+            <properties include=".*"/>
+        </genericFilter>
+
+        <accordion width="100%">
+            <accordionPanel summaryText="Actions">
+                <hbox width="100%">
+                    <!--                    <button id="createCompanyButton" action="companiesDataGrid.createCompanyAction"-->
+                    <!--                            focusShortcut="ALT-C"/>-->
+                    <!--                    <button id="editCompanyButton" action="companiesDataGrid.editCompanyAction" focusShortcut="ALT-E"/>-->
+
+                    <button id="customAddCompanyButton" focusShortcut="ALT-A" icon="ADD_ACTION"
+                            classNames="background-add button-style"
+                            text="msg://com.company.jmix_hrm.view.user/addButton"/>
+                    <button id="customEditCompanyButton" focusShortcut="ALT-E" icon="EDIT_ACTION"
+                            classNames="background-edit button-style"
+                            text="msg://com.company.jmix_hrm.view.department/editButton"/>
+
+                    <button id="removeCompanyButton" action="companiesDataGrid.removeCompanyAction"
+                            focusShortcut="ALT-R"/>
+                    <!--                    When Clicked On This Button Then Department Dto List View Will Be Opened As Dialog-->
+                    <button id="viewDepartmentsButton" text="msg://viewDepartmentsButton" icon="EYE"
+                            classNames="background-view button-style" focusShortcut="ALT-V"/>
+                </hbox>
+            </accordionPanel>
+        </accordion>
+
+        <dataGrid id="companiesDataGrid" dataContainer="companiesDc">
+
+            <columns>
+                <column property="companyCode"/>
+                <column property="companyName"/>
+                <column property="city"/>
+                <column property="country"/>
+            </columns>
+
+            <actions>
+
+                <!--                <action id="createCompanyAction" type="list_create">-->
+                <!--                    <properties>-->
+                <!--                        <property name="openMode" value="DIALOG"/>-->
+                <!--                    </properties>-->
+                <!--                </action>-->
+
+                <!--                <action id="editCompanyAction" type="list_edit">-->
+                <!--                    <properties>-->
+                <!--                        <property name="openMode" value="DIALOG"/>-->
+                <!--                    </properties>-->
+                <!--                </action>-->
+
+                <action id="removeCompanyAction" type="list_remove"/>
+
+            </actions>
+
+        </dataGrid>
+
+        <hbox width="100%">
+            <endSlot>
+                <simplePagination id="pagination" dataLoader="companiesDl"/>
+            </endSlot>
+        </hbox>
+    </layout>
+
+</view>

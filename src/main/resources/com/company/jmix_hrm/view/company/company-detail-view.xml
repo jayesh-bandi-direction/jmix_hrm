@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<view xmlns="http://jmix.io/schema/flowui/view">
+
+    <data>
+        <instance id="companyDc" class="com.company.jmix_hrm.entity.Company">
+            <fetchPlan extends="_base"/>
+            <loader id="companyDl"/>
+        </instance>
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+
+    <actions>
+        <action id="detailSaveCloseAction" type="detail_saveClose"/>
+        <action id="detailCloseAction" type="detail_close"/>
+    </actions>
+
+    <layout>
+        <formLayout id="companyForm" dataContainer="companyDc">
+            <textField id="companyCodeField" property="companyCode"/>
+            <textField id="companyNameField" property="companyName"/>
+            <!--            <textField id="cityField" property="city" />-->
+            <!--            <textField id="countryField" property="country" />-->
+            <comboBox id="countryField" property="country"/>
+            <comboBox id="cityField" property="city"/>
+        </formLayout>
+
+        <hbox>
+            <button id="detailSaveCloseButton" action="detailSaveCloseAction" focusShortcut="ALT-S"/>
+            <button id="detailCloseButton" action="detailCloseAction" focusShortcut="ALT-C"/>
+        </hbox>
+    </layout>
+
+
+</view>

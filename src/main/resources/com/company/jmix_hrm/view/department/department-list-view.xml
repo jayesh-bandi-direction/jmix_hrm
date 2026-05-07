@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://com.company.jmix_hrm.entity/Department"
+      focusComponent="departmentsDataGrid">
+
+    <data readOnly="true">
+        <collection id="departmentsDc" class="com.company.jmix_hrm.entity.Department">
+            <fetchPlan extends="_base">
+                <property name="company" fetchPlan="_base"/>
+                <property name="employees" fetchPlan="_base">
+                    <property name="user" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader id="departmentsDl">
+                <query>
+                    <![CDATA[select d from Department d]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+
+    <layout>
+
+        <hbox width="100%">
+            <fragment class="com.company.jmix_hrm.view.user.UserFragment"/>
+        </hbox>
+
+        <genericFilter id="genericFilter" dataLoader="departmentsDl">
+            <properties include=".*"/>
+        </genericFilter>
+
+        <accordion width="100%">
+            <accordionPanel summaryText="Actions">
+                <hbox width="100%">
+                    <!--                    <button id="createDepartmentButton" action="departmentsDataGrid.createDepartmentAction" />-->
+                    <!--                    <button id="removeDepartmentButton" action="departmentsDataGrid.removeDepartmentAction" />-->
+                    <!--                    <button id="editDepartmentButton" action="departmentsDataGrid.editDepartmentAction" />-->
+                    <button id="addDepartmentCustomButton" icon="ADD_ACTION" text="msg://saveButton"
+                            classNames="background-add button-style" focusShortcut="ALT-A"/>
+                    <button id="editDepartmentCustomButton" icon="EDIT_ACTION" text="msg://editButton"
+                            classNames="background-edit button-style" focusShortcut="ALT-E"/>
+                    <button id="removeDepartmentCustomButton" icon="REMOVE_ACTION" text="msg://removeButton"
+                            classNames="background-remove button-style" focusShortcut="ALT-R"/>
+                    <button id="viewEmployees" icon="EYE" text="msg://viewEmployeesButton"
+                            classNames="background-view button-style" focusShortcut="ALT-V"/>
+                </hbox>
+            </accordionPanel>
+        </accordion>
+
+        <dataGrid id="departmentsDataGrid" dataContainer="departmentsDc">
+
+            <columns>
+                <column property="departmentCode"/>
+                <column property="departmentName"/>
+                <column property="company.companyName"/>
+                <column property="createdAt"/>
+            </columns>
+
+            <actions>
+
+                <action id="createDepartmentAction" type="list_create">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+
+                <action id="editDepartmentAction" type="list_edit">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+
+                <action id="removeDepartmentAction" type="list_remove"/>
+
+            </actions>
+
+        </dataGrid>
+
+        <hbox width="100%">
+            <endSlot>
+                <simplePagination id="pagination" dataLoader="departmentsDl"/>
+            </endSlot>
+        </hbox>
+
+    </layout>
+</view>

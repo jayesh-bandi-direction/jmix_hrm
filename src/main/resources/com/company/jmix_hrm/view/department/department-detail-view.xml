@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="Department">
+
+    <data>
+        <!--        Will contain the department detail -->
+        <instance id="departmentDc" class="com.company.jmix_hrm.entity.Department">
+            <fetchPlan extends="_base">
+                <property name="company" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="departmentDl"/>
+        </instance>
+
+        <!--        Container to contain the companies record -->
+        <collection id="companiesDc" class="com.company.jmix_hrm.entity.Company">
+            <fetchPlan extends="_base"/>
+            <loader id="companiesDl">
+                <![CDATA[select c From Company c]]>
+            </loader>
+        </collection>
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+
+    <actions>
+        <!--        <action id="detailSaveCloseAction" type="detail_saveClose" />-->
+        <action id="detailCloseAction" type="detail_close"/>
+    </actions>
+
+    <layout>
+
+        <formLayout id="departmentFormContainer" dataContainer="departmentDc">
+            <textField id="departmentCodeField" property="departmentCode"/>
+            <textField id="departmentNameField" property="departmentName"/>
+            <!--            <entityPicker property="company" id="companyField" >-->
+            <!--                <actions>-->
+            <!--                    <action id="entityLookupAction" type="entity_lookup" />-->
+            <!--                </actions>-->
+            <!--            </entityPicker>-->
+            <entityComboBox title="msg://com.company.jmix_hrm.entity/Company"
+                            id="companyComboBox"
+                            itemsContainer="companiesDc"
+                            dataContainer="departmentDc"
+                            property="company"/>
+        </formLayout>
+
+        <hbox>
+            <!--            <button id="detailSaveCloseButton" action="detailSaveCloseAction" />-->
+            <button id="addDepartmentButton" icon="CREATE_ACTION" text="Save" focusShortcut="ALT-S" classNames="background-add button-style"/>
+            <button id="editDepartmentButton" icon="DETAIL_SAVE_ACTION" text="Save" focusShortcut="ALT-S" classNames="background-add button-style"/>
+            <button id="detailCloseButton" action="detailCloseAction" focusShortcut="ALT-C"/>
+        </hbox>
+
+    </layout>
+
+</view>

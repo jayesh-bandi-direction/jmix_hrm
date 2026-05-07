@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<fragment xmlns="http://jmix.io/schema/flowui/fragment">
+
+    <data>
+        <collection id="managerEmployeesDc" class="com.company.jmix_hrm.entity.Employee">
+            <fetchPlan extends="_base"/>
+            <loader id="managerEmployeesDl"/>
+        </collection>
+    </data>
+
+
+    <content>
+        <!--        Will show the current logged-in user -->
+        <hbox classNames="main-fragment">
+            <!-- Title div -->
+            <div classNames="main-fragment-title-div">
+                <nativeLabel id="mainFragmentTitle" text="msg://com.company.jmix_hrm.view.main/MainView.title"
+                             classNames="main-fragment-title"/>
+            </div>
+            <!-- User detail div -->
+            <div classNames="main-fragment-detail-div">
+                <div>
+                    <div classNames="label-value-div">
+                        <nativeLabel id="employeeNameLabel"
+                                     classNames="main-fragment-field-label"
+                                     text="msg://com.company.jmix_hrm.view.main/employeeNameLabel"/>
+                        <nativeLabel id="employeeNameValue"/>
+                    </div>
+                    <div classNames="label-value-div">
+                        <nativeLabel id="employeeCodeLabel"
+                                     classNames="main-fragment-field-label"
+                                     text="msg://com.company.jmix_hrm.view.main/codeLabel"/>
+                        <nativeLabel id="employeeCodeValue"/>
+                    </div>
+                    <div classNames="label-value-div">
+                        <nativeLabel id="employeeDesignationLabel"
+                                     classNames="main-fragment-field-label"
+                                     text="msg://com.company.jmix_hrm.view.main/designationLabel"/>
+                        <nativeLabel id="employeeDesignationValue"/>
+                    </div>
+                    <div classNames="label-value-div">
+                        <nativeLabel id="employeeUsernameLabel"
+                                     classNames="main-fragment-field-label"
+                                     text="msg://com.company.jmix_hrm.view.main/usernameLabel"/>
+                        <nativeLabel id="employeeUsernameValue"/>
+                    </div>
+                </div>
+                <div>
+                    <div classNames="label-value-div">
+                        <nativeLabel id="employeeEmailLabel"
+                                     classNames="main-fragment-field-label"
+                                     text="msg://com.company.jmix_hrm.view.main/emailLabel"/>
+                        <nativeLabel id="employeeEmailValue"/>
+                    </div>
+                    <div classNames="label-value-div">
+                        <nativeLabel id="employeeDobLabel"
+                                     classNames="main-fragment-field-label"
+                                     text="msg://com.company.jmix_hrm.view.main/DobLabel"/>
+                        <nativeLabel id="employeeDobValue"/>
+                    </div>
+                    <div classNames="label-value-div">
+                        <nativeLabel id="employeeDepartmentLabel"
+                                     classNames="main-fragment-field-label"
+                                     text="msg://com.company.jmix_hrm.view.main/departmentNameLabel"/>
+                        <nativeLabel id="employeeDepartmentValue"/>
+                    </div>
+                    <div classNames="label-value-div">
+                        <nativeLabel id="employeeCompanyLabel"
+                                     classNames="main-fragment-field-label"
+                                     text="msg://com.company.jmix_hrm.view.main/companyNameLabel"/>
+                        <nativeLabel id="employeeCompanyValue"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- To show the list of employees under manager -->
+            <treeDataGrid id="managerEmployeesTreeDataGrid" hierarchyProperty="manager"
+                          dataContainer="managerEmployeesDc"
+                          classNames="employees-list-tree-data-grid">
+                <columns>
+                    <column property="designation"/>
+                    <column property="employeeCode"/>
+                </columns>
+            </treeDataGrid>
+
+        </hbox>
+    </content>
+</fragment>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="IgnoredChangelogIncludeConfig">
+    <datastore-include-infos>
+      <datastore-include-info datastore-name="main" />
+    </datastore-include-infos>
+  </component>
+  <component name="JmixDataStoreSettingsManager">
+    <moduleSettings>
+      <entry key="com.company.jmix_hrm.main">
+        <ModuleSettings>
+          <option name="dataStoreOptionsV2">
+            <map>
+              <entry key="main">
+                <value>
+                  <DataStoreSettingsV2>
+                    <option name="generateDdlType" value="CREATE_AND_UPDATE" />
+                    <option name="supportedTypes">
+                      <option value="mysql" />
+                      <option value="postgres" />
+                    </option>
+                  </DataStoreSettingsV2>
+                </value>
+              </entry>
+              <entry key="secondary">
+                <value>
+                  <DataStoreSettingsV2>
+                    <option name="supportedTypes">
+                      <option value="mysql" />
+                    </option>
+                  </DataStoreSettingsV2>
+                </value>
+              </entry>
+            </map>
+          </option>
+        </ModuleSettings>
+      </entry>
+    </moduleSettings>
+  </component>
+</project>

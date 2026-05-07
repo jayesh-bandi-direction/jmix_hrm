@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="Departments"
+      focusComponent="departmentsDtoDataGrid">
+
+    <data>
+        <collection id="departmentsDtoDc" class="com.company.jmix_hrm.dto.DepartmentDto">
+            <fetchPlan extends="_base"/>
+            <loader id="departmentsDtoDl" />
+        </collection>
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true" />
+    </facets>
+
+    <layout>
+        <hbox width="100%">
+            <startSlot>
+                <button icon="ARROW_LEFT" id="backButton" focusShortcut="ESCAPE"/>
+                <hbox classNames="items-center">
+                    <nativeLabel id="companyLabel" text="" classNames="font-bold"/>
+                </hbox>
+            </startSlot>
+            <endSlot>
+                <button id="downloadExcelSheet" action="departmentsDtoDataGrid.excelExportAction" icon="EXCEL_EXPORT_ACTION" text="msg://excelButton"  classNames="button-style background-excel" focusShortcut="ALT-E"/>
+                <button icon="JSON_EXPORT_ACTION" id="downloadJson" action="departmentsDtoDataGrid.jsonExportAction" text="msg://jsonButton" classNames="button-style background-json" focusShortcut="ALT-J"/>
+            </endSlot>
+        </hbox>
+        <dataGrid id="departmentsDtoDataGrid" dataContainer="departmentsDtoDc">
+            <columns>
+                <column property="departmentName" />
+                <column property="departmentCode" />
+                <column property="employees" />
+                <column property="createdAt" />
+                <column property="createdBy" />
+                <column property="updatedAt" />
+                <column property="updatedBy" />
+                <column property="version" />
+            </columns>
+            <actions>
+                <action id="excelExportAction" type="grdexp_excelExport" />
+                <action id="jsonExportAction" type="grdexp_jsonExport" />
+            </actions>
+        </dataGrid>
+    </layout>
+
+
+</view>

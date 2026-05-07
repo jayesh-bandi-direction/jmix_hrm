@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://UserDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="userDc"
+                  class="com.company.jmix_hrm.entity.User">
+            <fetchPlan extends="_base">
+
+                <property name="employee" fetchPlan="_base">
+                    <property name="manager"/>
+                    <property name="department" fetchPlan="_base"/>
+                </property>
+
+            </fetchPlan>
+            <loader/>
+        </instance>
+
+        <collection id="departmentsDc" class="com.company.jmix_hrm.entity.Department">
+            <fetchPlan extends="_base"/>
+            <loader id="departmentsDl">
+                <query>
+                    <![CDATA[select d from Department d]]>
+                </query>
+            </loader>
+        </collection>
+
+        <collection id="employeesDc" class="com.company.jmix_hrm.entity.Employee">
+            <fetchPlan extends="_base">
+                <property name="manager" fetchPlan="_base"/>
+                <property name="department" fetchPlan="_base">
+                    <property name="company" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader id="employeesDl"/>
+        </collection>
+
+    </data>
+    <actions>
+        <action id="saveCloseAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <layout>
+        <formLayout id="form" dataContainer="userDc">
+            <textField id="usernameField" property="username" readOnly="true"/>
+            <passwordField id="passwordField"
+                           label="msg://com.company.jmix_hrm.entity/User.password"
+                           required="true"
+                           visible="false"/>
+            <passwordField id="confirmPasswordField"
+                           label="msg://confirmPassword"
+                           required="true"
+                           visible="false"/>
+            <textField id="firstNameField" property="firstName"/>
+            <textField id="lastNameField" property="lastName"/>
+            <textField id="emailField" property="email"/>
+
+            <!--            <comboBox id="timeZoneField" property="timeZoneId" clearButtonVisible="true"/>-->
+            <checkbox id="activeField" property="active"/>
+            <textField id="employeeCodeField" property="employee.employeeCode"/>
+            <datePicker id="employeeDateOfBirthField" property="employee.dateOfBirth"/>
+            <radioButtonGroup itemsEnum="com.company.jmix_hrm.entity.Gender" property="employee.gender"
+                              id="genderField"/>
+            <comboBox id="employeeDesignationField" property="employee.designation"/>
+            <!--                        <entityPicker id="employeeManagerField" property="employee.manager" title="Manager">-->
+            <!--                            <actions>-->
+            <!--                                <action id="employeeEntityLookupAction" type="entity_lookup"/>-->
+            <!--                            </actions>-->
+            <!--                        </entityPicker>-->
+            <!--            <entityPicker property="employee.department" id="departmentField">-->
+            <!--                <actions>-->
+            <!--                    <action id="entityLookupAction" type="entity_lookup"/>-->
+            <!--                    <action id="entityOpenAction" type="entity_open"/>-->
+            <!--                </actions>-->
+            <!--            </entityPicker>-->
+            <radioButtonGroup id="radioButtonManagerDepartment"
+                              itemsEnum="com.company.jmix_hrm.enums.ManagerDepartment"/>
+            <entityComboBox property="employee.manager" id="employeeManagerField" itemsContainer="employeesDc"/>
+            <entityComboBox property="employee.department" id="departmentField" itemsContainer="departmentsDc"/>
+            <!--            <comboBox property="manager" dataContainer="employeesDc"/>-->
+        </formLayout>
+        <hbox id="detailActions">
+            <!--            <button id="saveAndCloseButton" action="saveCloseAction"/>-->
+            <button id="saveNewEmployeeButton" icon="ADD_ACTION"
+                    text="msg://com.company.jmix_hrm.view.department/saveButton"
+                    classNames="background-add button-style" focusShortcut="ALT-A"/>
+            <button id="saveExistingEmployeeButton" icon="DETAIL_SAVE_ACTION"
+                    text="msg://com.company.jmix_hrm.view.department/saveButton"
+                    classNames="background-add button-style" focusShortcut="ALT-A"/>
+            <button id="closeButton" action="closeAction" focusShortcut="ALT-C"/>
+        </hbox>
+    </layout>
+</view>

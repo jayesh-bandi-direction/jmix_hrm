@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://jmix.io/schema/flowui/fragment">
+
+    <data>
+        <instance id="userDc" class="com.company.jmix_hrm.entity.User">
+            <fetchPlan extends="_base">
+                <property name="employee" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="userDl"/>
+        </instance>
+    </data>
+
+    <content>
+        <hbox width="100%" id="userBox" classNames="user-horizontal-box">
+            <hbox width="50%" classNames="user-sub-box">
+                <nativeLabel id="employeeCodeLabel" classNames="uppercase font-bold"/>
+                <nativeLabel id="employeeCodeValueLabel" classNames="font-medium"/>
+            </hbox>
+            <hbox width="50%" classNames="user-sub-box">
+                <nativeLabel id="employeeEmailLabel" classNames="uppercase font-bold"/>
+                <nativeLabel id="employeeEmailValueLabel" classNames="font-medium"/>
+            </hbox>
+            <hbox width="50%" classNames="user-sub-box">
+                <nativeLabel id="employeeDesignationLabel" classNames="uppercase font-bold"/>
+                <nativeLabel id="employeeDesignationValueLabel" text="Trainee Software Engineer"
+                             classNames="font-medium"/>
+            </hbox>
+        </hbox>
+    </content>
+</fragment>

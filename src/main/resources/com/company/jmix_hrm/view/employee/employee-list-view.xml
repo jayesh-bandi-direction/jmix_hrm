@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://title">
+
+    <data>
+        <collection id="employeesDc" class="com.company.jmix_hrm.entity.Employee">
+            <fetchPlan extends="_base">
+                <property name="department" fetchPlan="_base">
+                    <property name="company" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader id="employeesDl"/>
+        </collection>
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+
+    <layout>
+        <dataGrid id="employeesDataGrid" dataContainer="employeesDc">
+            <columns>
+                <!--                <column property="employeeId"/>-->
+                <column property="employeeCode"/>
+                <column property="designation"/>
+                <column property="department.departmentName"/>
+                <column property="department.company.companyName"/>
+            </columns>
+        </dataGrid>
+    </layout>
+</view>

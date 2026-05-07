@@ -1,0 +1,179 @@
+/* Buttons styles */
+
+.background-green{
+    background-color: #3cb371;
+}
+
+.background-gray{
+    background-color: #616161;
+}
+
+.background-view{
+    background-color: white;
+    color: #3B38A0;
+    border: 2px solid #3B38A0;
+}
+
+.background-view:hover{
+    background-color: #3B38A0;
+    color: white;
+    transition: 0.3s;
+}
+
+.background-remove{
+    background-color: white;
+    color: red;
+    border: 2px solid red;
+}
+
+.background-remove:hover{
+    background-color: red;
+    color: white;
+    transition: 0.3s;
+}
+
+.background-edit{
+    background-color: white;
+    color: #982598;
+    border: 2px solid #982598;
+}
+
+.background-edit:hover{
+    background-color: #982598;
+    color: white;
+    transition: 0.3s;
+}
+
+.background-add{
+    background-color: white;
+    color: #006BFF;
+    border: 2px solid #006BFF;
+}
+
+.background-add:hover{
+    background-color: #006BFF;
+    color: white;
+    transition: 0.3s;
+}
+
+.button-style{
+    padding: 8px 12px;
+}
+
+.background-excel{
+    background-color: white;
+    color: #5B7E3C;
+    border: 2px solid #5B7E3C;
+}
+
+.background-excel:hover{
+    background-color: #5B7E3C;
+    color: white;
+    transition: 0.3s;
+}
+
+.background-json{
+    background-color: white;
+    color: #1A05A2;
+    border: 2px solid #1A05A2;
+}
+
+.background-json:hover{
+    background-color: #1A05A2;
+    color: white;
+    transition: 0.3s;
+}
+
+.background-unlink{
+    background-color: white;
+    color: #9B0F06;
+    border: 2px solid #9B0F06;
+}
+
+.background-unlink:hover{
+    background-color: #9B0F06;
+    color: white;
+    transition: 0.3s
+}
+
+
+
+/* User fragment styles */
+
+.user-horizontal-box{
+    border: 2px solid #3D45AA;
+    padding: 20px 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px #3D45AA;
+}
+
+.user-sub-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+
+/* Main fragment styles */
+
+.main-fragment {
+    padding: 30px 60px;
+    width: 100%;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    border-radius: 12px;
+    height: 100%;
+}
+
+.main-fragment-title-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-fragment-title {
+    text-transform: uppercase;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 8px;
+}
+
+.main-fragment-detail-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.main-fragment-detail-div > div {
+    flex: 1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px #3D45AA;
+}
+
+.label-value-div {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.main-fragment-field-label {
+    font-weight: 600;
+}
+
+.employees-list-tree-data-grid{
+    box-shadow: 2px 2px 2px 2px #3D45AA;
+    border-radius: 10px;
+}
+
+.active-field-style{
+    background-color: green;
+    padding: 2px 6px;
+    text-transform: uppercase;
+}

@@ -1,0 +1,15 @@
+@import url('jmix_hrm.css');
+@import url('view/main-view.css');
+@import url('view/main-view-top-menu.css');
+@import url('view/login-view.css');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+*{
+    font-family: "IBM Plex Serif", serif;
+}
+
+.bg-green-span{
+    background-color: green;
+    padding: 2px 6px;
+    text-transform: uppercase;
+}

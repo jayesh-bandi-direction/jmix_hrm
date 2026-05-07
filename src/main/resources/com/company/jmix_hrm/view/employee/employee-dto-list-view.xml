@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<view xmlns="http://jmix.io/schema/flowui/view">
+
+    <data>
+        <collection id="employeesDtoDc" class="com.company.jmix_hrm.dto.EmployeeDto">
+            <fetchPlan extends="_base">
+            </fetchPlan>
+            <loader id="employeesDtoDl"/>
+        </collection>
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+
+    <layout>
+
+        <hbox width="100%">
+            <startSlot>
+                <button id="backButtonToDepartment" icon="ARROW_LEFT" focusShortcut="ESCAPE"/>
+                <hbox classNames="items-center">
+                    <nativeLabel id="departmentLabel" text="" classNames="font-bold "/>
+                    <nativeLabel id="space" text=":" classNames="font-bold"/>
+                    <nativeLabel id="companyLabel" text="" classNames="font-bold"/>
+                </hbox>
+            </startSlot>
+            <endSlot>
+                <button id="excelDownloadButton" icon="EXCEL_EXPORT_ACTION"
+                        action="employeesDtoDataGrid.excelExportAction" text="msg://excelButton"
+                        classNames="button-style background-excel" focusShortcut="ALT-E"/>
+                <button id="jsonDownloadButton" icon="JSON_EXPORT_ACTION" action="employeesDtoDataGrid.jsonExportAction"
+                        text="msg://jsonButton" classNames="button-style background-json" focusShortcut="ALT-J"/>
+                <button id="unassignEmployeeButton" icon="UNLINK" text="msg://unassignButton"
+                        classNames="button-style background-unlink" focusShortcut="ALT-U"/>
+            </endSlot>
+        </hbox>
+
+        <dataGrid id="employeesDtoDataGrid" dataContainer="employeesDtoDc">
+            <columns>
+                <column property="firstname"/>
+                <column property="lastname"/>
+                <column property="employeeCode"/>
+                <column property="gender"/>
+                <column property="designation"/>
+                <column property="createdAt"/>
+                <column property="createdBy"/>
+                <column property="updatedAt"/>
+                <column property="updatedBy"/>
+                <!--                <column property="version" />-->
+            </columns>
+            <actions>
+                <action id="excelExportAction" type="grdexp_excelExport"/>
+                <action id="jsonExportAction" type="grdexp_jsonExport"/>
+            </actions>
+        </dataGrid>
+
+    </layout>
+</view>

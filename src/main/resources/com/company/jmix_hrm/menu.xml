@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://jmix.io/schema/flowui/menu">
+
+    <menu id="application" title="msg://com.company.jmix_hrm/menu.application.title" opened="true">
+        <item id="userMenu" view="User.list" title="msg://com.company.jmix_hrm.entity/Employee"/>
+        <item id="departmentMenu" view="Department.list" title="msg://com.company.jmix_hrm.entity/Department" />
+        <item id="companyMenu" view="Company.list" title="msg://com.company.jmix_hrm.entity/Company" />
+    </menu>
+
+</menu-config>
