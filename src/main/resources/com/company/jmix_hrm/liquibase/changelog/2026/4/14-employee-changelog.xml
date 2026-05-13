@@ -6,27 +6,23 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
 
-    <changeSet id="1" author="jayesh">
+    <changeSet id="1" author="Jayesh">
         <createTable tableName="EMPLOYEE">
 
             <column name="EMPLOYEE_ID" type="uuid">
-                <constraints primaryKey="true" primaryKeyName="PK_EMPLOYEE"/>
+                <constraints primaryKey="true"/>
             </column>
 
             <column name="EMPLOYEE_CODE" type="varchar(255)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false" unique="true" />
             </column>
 
-            <column name="DATE_OF_BIRTH" type="datetime">
-                <constraints nullable="false"/>
-            </column>
+            <column name="DATE_OF_BIRTH" type="datetime" />
 
-            <column name="DEPARTMENT_ID" type="uuid">
-                <constraints nullable="true"/>
-            </column>
+            <column name="DEPARTMENT_ID" type="uuid" />
 
             <column name="USER_ID" type="uuid">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
 
             <column name="CREATED_BY" type="VARCHAR(255)"/>
@@ -42,45 +38,38 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="EMPLOYEE" baseColumnNames="DEPARTMENT_ID"
-                                 constraintName="FK_EMPLOYEE_DEPARTMENT"
+                                 constraintName="FK_DEPARTMENT_EMPLOYEE"
                                  referencedTableName="DEPARTMENT"
                                  referencedColumnNames="DEPARTMENT_ID"/>
 
-        <addForeignKeyConstraint baseTableName="EMPLOYEE" baseColumnNames="USER_ID" constraintName="FK_EMPLOYEE_USER"
+        <addForeignKeyConstraint baseTableName="EMPLOYEE" baseColumnNames="USER_ID" constraintName="FK_USER_EMPLOYEE"
                                  referencedTableName="USER_"
                                  referencedColumnNames="ID"/>
 
     </changeSet>
 
-    <changeSet id="2" author="jayesh">
+    <changeSet id="2" author="Jayesh">
         <modifyDataType tableName="EMPLOYEE" columnName="DATE_OF_BIRTH" newDataType="date"/>
     </changeSet>
 
-    <changeSet id="3" author="sameet">
+    <changeSet id="3" author="Sameet">
         <addColumn tableName="EMPLOYEE">
-            <column name="GENDER" type="varchar(255)"/>
+            <column name="GENDER" type="varchar(255)" />
         </addColumn>
         <addColumn tableName="EMPLOYEE">
-            <column name="DESIGNATION" type="varchar(255)"/>
+            <column name="DESIGNATION" type="varchar(255)" />
         </addColumn>
     </changeSet>
 
-    <changeSet id="4" author="jayesh">
-        <addNotNullConstraint tableName="EMPLOYEE" columnName="GENDER"/>
-        <addNotNullConstraint tableName="EMPLOYEE" columnName="DESIGNATION"/>
-    </changeSet>
-
-    <changeSet id="5" author="jayesh">
+    <changeSet id="5" author="Jayesh">
         <addColumn tableName="EMPLOYEE">
             <column name="MANAGER_ID" type="UUID"/>
         </addColumn>
-    </changeSet>
-
-    <changeSet id="6" author="jayesh">
         <addForeignKeyConstraint baseTableName="EMPLOYEE" baseColumnNames="MANAGER_ID"
                                  constraintName="FK_EMPLOYEE_MANAGER"
                                  referencedTableName="EMPLOYEE"
                                  referencedColumnNames="EMPLOYEE_ID"/>
     </changeSet>
+
 
 </databaseChangeLog>

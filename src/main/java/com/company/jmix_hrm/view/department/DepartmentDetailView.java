@@ -19,7 +19,6 @@ import io.jmix.flowui.Dialogs;
 import io.jmix.flowui.Notifications;
 import io.jmix.flowui.ViewNavigators;
 import io.jmix.flowui.model.DataContext;
-import io.jmix.flowui.model.InstanceLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,9 +31,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class DepartmentDetailView extends StandardDetailView<Department> {
 
     @ViewComponent
-    InstanceLoader<Department> departmentDl;
-
-    @ViewComponent
     private Button addDepartmentButton;
 
     @ViewComponent
@@ -43,19 +39,19 @@ public class DepartmentDetailView extends StandardDetailView<Department> {
     @ViewComponent
     private ComboBox<Company> companyComboBox;
 
-    private final Notifications notifications;
+    private final transient Notifications notifications;
 
-    private final ViewNavigators viewNavigators;
+    private final transient ViewNavigators viewNavigators;
 
-    private final CompanyService companyService;
+    private final transient CompanyService companyService;
 
-    private final DepartmentService departmentService;
+    private final transient DepartmentService departmentService;
 
-    private final Dialogs dialogs;
+    private final transient Dialogs dialogs;
 
-    private final CurrentAuthentication currentAuthentication;
+    private final transient CurrentAuthentication currentAuthentication;
 
-    private final EmployeeService employeeService;
+    private final transient EmployeeService employeeService;
 
     //    Constructor Injection
     public DepartmentDetailView(Notifications notifications, ViewNavigators viewNavigators, CompanyService companyService, DepartmentService departmentService, Dialogs dialogs, CurrentAuthentication currentAuthentication, EmployeeService employeeService) {
@@ -173,6 +169,5 @@ public class DepartmentDetailView extends StandardDetailView<Department> {
             notifications.create(exception.getMessage()).withPosition(Notification.Position.TOP_CENTER).withDuration(1000 * 6).show();
         }
     }
-
 
 }

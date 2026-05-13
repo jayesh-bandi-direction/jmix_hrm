@@ -29,18 +29,18 @@ public class Employee {
     @Column(name = "EMPLOYEE_ID")
     private UUID id;
 
-//    @InstanceName
+    //    @InstanceName
     @NotNull(message = "EMPLOYEE CODE IS REQUIRED")
-    @Column(name = "EMPLOYEE_CODE")
+    @Column(name = "EMPLOYEE_CODE", nullable = false, unique = true)
     private String employeeCode;
 
     @Column(name = "DATE_OF_BIRTH")
     private LocalDate dateOfBirth;
 
-    @Column(name = "GENDER", nullable = false)
+    @Column(name = "GENDER")
     private Gender gender;
 
-    @Column(name = "DESIGNATION", nullable = false)
+    @Column(name = "DESIGNATION")
     private Designation designation;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,7 +52,7 @@ public class Employee {
     private Employee manager;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USER_ID", nullable = false, unique = true)
     private User user;
 
     @CreatedDate
@@ -76,8 +76,8 @@ public class Employee {
     private Integer version;
 
     @InstanceName
-    public String getInstanceName(){
-        return user.getFirstName() + " " + user.getLastName() + " - " + department.getDepartmentName() + " - " + department.getCompany().getCompanyName();
+    public String getInstanceName() {
+        return user.getFirstName() + " " + user.getLastName() + " - " + (department != null ? department.getDepartmentName() : "") + " - " + (user.getCompany() != null ? user.getCompany().getCompanyName() : "");
     }
 
 }

@@ -31,16 +31,16 @@ public class Department {
     private UUID departmentId;
 
     @NotNull(message = "DEPARTMENT NAME IS REQUIRED")
-    @Column(name = "DEPARTMENT_NAME")
+    @Column(name = "DEPARTMENT_NAME", nullable = false)
     private String departmentName;
 
     @NotNull(message = "DEPARTMENT CODE IS REQUIRED")
 //    @InstanceName
-    @Column(name = "DEPARTMENT_CODE")
+    @Column(name = "DEPARTMENT_CODE", nullable = false, unique = true)
     private String departmentCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COMPANY_ID")
+    @JoinColumn(name = "COMPANY_ID", nullable = false)
     private Company company;
 
 //    When a department is deleted, the employees in that department will be unlinked and not deleted

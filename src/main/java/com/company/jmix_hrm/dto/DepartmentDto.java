@@ -3,7 +3,6 @@ package com.company.jmix_hrm.dto;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 

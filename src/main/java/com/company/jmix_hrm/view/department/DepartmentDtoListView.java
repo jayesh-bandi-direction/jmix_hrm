@@ -35,29 +35,29 @@ public class DepartmentDtoListView extends StandardListView<DepartmentDto> {
 
     //    Binding the container present in the descriptor so that it can be used in the controller
     @ViewComponent
-    CollectionContainer<DepartmentDto> departmentsDtoDc;
+    private transient CollectionContainer<DepartmentDto> departmentsDtoDc;
 
     @ViewComponent
     NativeLabel companyLabel;
 
     //    Binding the action present in descriptor to use in controller
     @ViewComponent("departmentsDtoDataGrid.excelExportAction")
-    ExcelExportAction excelExportAction;
+    private transient ExcelExportAction excelExportAction;
 
     @ViewComponent("departmentsDtoDataGrid.jsonExportAction")
-    JsonExportAction jsonExportAction;
+    private transient JsonExportAction jsonExportAction;
 
     //    Data Manager in jmix is used to save, get and update the records in db
-    private final DataManager dataManager;
+    private final transient DataManager dataManager;
 
     //    Used to navigate to the specified view
-    private final ViewNavigators viewNavigators;
+    private final transient ViewNavigators viewNavigators;
 
     //    Service
-    private final CompanyService companyService;
+    private final transient CompanyService companyService;
 
     //    Notification
-    private final Notifications notifications;
+    private final transient Notifications notifications;
 
     //    Constructor Injection
     public DepartmentDtoListView(DataManager dataManager, ViewNavigators viewNavigators, CompanyService companyService, Notifications notifications) {

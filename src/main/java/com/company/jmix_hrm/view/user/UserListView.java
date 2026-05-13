@@ -5,7 +5,7 @@ import com.company.jmix_hrm.service.EmployeeService;
 import com.company.jmix_hrm.view.main.MainView;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
@@ -16,7 +16,6 @@ import io.jmix.flowui.*;
 import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.view.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Route(value = "users", layout = MainView.class)
@@ -26,24 +25,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 @DialogMode(width = "64em")
 public class UserListView extends StandardListView<User> {
 
-    private final UiComponents uiComponents;
+    private final transient UiComponents uiComponents;
 
-    private final EmployeeService employeeService;
+    private final transient EmployeeService employeeService;
 
-    private final ViewNavigators viewNavigators;
+    private final transient ViewNavigators viewNavigators;
 
-    private final Notifications notifications;
+    private final transient Notifications notifications;
 
-    private final CurrentAuthentication currentAuthentication;
+    private final transient CurrentAuthentication currentAuthentication;
 
-    private final DialogWindows dialogWindows;
+    private final transient DialogWindows dialogWindows;
 
     @ViewComponent
     private DataGrid<User> usersDataGrid;
 
     @ViewComponent
     private JmixButton customAddButton;
-
 
     public UserListView(UiComponents uiComponents, EmployeeService employeeService, ViewNavigators viewNavigators, Notifications notifications, CurrentAuthentication currentAuthentication, DialogWindows dialogWindows) {
         this.uiComponents = uiComponents;
@@ -59,7 +57,7 @@ public class UserListView extends StandardListView<User> {
         UserDetails userDetails = currentAuthentication.getUser();
         User currentUser = (User) userDetails;
         User currentUserDetails = employeeService.getEmployeeDepartmentCompanyUser(currentUser.getId());
-        if (currentUserDetails.getEmployee() != null && currentUserDetails.getEmployee().getDesignation().getId().equals("Trainee Software Engineer")) {
+        if (currentUserDetails.getEmployee() != null && currentUserDetails.getEmployee().getDesignation() != null && currentUserDetails.getEmployee().getDesignation().getId().equals("Trainee Software Engineer")) {
             customAddButton.setVisible(false);
         }
     }
@@ -67,23 +65,17 @@ public class UserListView extends StandardListView<User> {
     @Supply(to = "usersDataGrid.active", subject = "renderer")
     public Renderer<User> dataGridUserComponentRenderer() {
         return new ComponentRenderer<>(user -> {
-            Div div = uiComponents.create(Div.class);
-//            div.setClassName("active-field-style");
-            div.getStyle().setBorderRadius("10px");
-            div.getStyle().setPaddingTop("4px");
-            div.getStyle().setPaddingBottom("4px");
-            div.getStyle().setWidth("90%");
-            div.getStyle().set("font-weight", "bold");
+            Span span = uiComponents.create(Span.class);
             if (Boolean.TRUE.equals(user.getActive())) {
-                div.setText("Active");
-                div.getStyle().setBackgroundColor("#9AD872");
+                span.setText("Active");
+                span.getStyle().setColor("#609966");
             } else {
-                div.getStyle().setBackgroundColor("#E74646");
-                div.setText("Inactive");
+                span.getStyle().setColor("#E74646");
+                span.setText("Inactive");
             }
-            div.getStyle().setDisplay(Style.Display.FLEX);
-            div.getStyle().setJustifyContent(Style.JustifyContent.CENTER);
-            return div;
+            span.getStyle().set("text-transform", "uppercase");
+            span.getStyle().setFontWeight(Style.FontWeight.BOLD);
+            return span;
         });
     }
 

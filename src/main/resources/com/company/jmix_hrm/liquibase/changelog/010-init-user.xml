@@ -76,4 +76,13 @@
 
     </changeSet>
 
+    <changeSet id="5" author="Jayesh">
+        <addColumn tableName="USER_">
+            <column name="COMPANY_ID" type="uuid"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="USER_" baseColumnNames="COMPANY_ID" constraintName="FK_COMPANY_USER"
+                                 referencedTableName="COMPANY"
+                                 referencedColumnNames="COMPANY_ID"/>
+    </changeSet>
+
 </databaseChangeLog>

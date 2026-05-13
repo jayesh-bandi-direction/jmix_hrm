@@ -8,7 +8,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.router.Route;
 import io.jmix.flowui.component.combobox.JmixComboBox;
 import io.jmix.flowui.view.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -25,17 +24,13 @@ import java.util.List;
 @DialogMode(width = "90%", height = "AUTO")
 public class CompanyDetailView extends StandardDetailView<Company> {
 
-    private List<String> cities = new ArrayList<>();
-
-    private List<String> countries = new ArrayList<>();
-
     @ViewComponent
     ComboBox<String> cityField;
 
     @ViewComponent
     private JmixComboBox<String> countryField;
 
-    private final CompanyService companyService;
+    private final transient CompanyService companyService;
 
     public CompanyDetailView(CompanyService companyService) {
         this.companyService = companyService;
@@ -43,21 +38,22 @@ public class CompanyDetailView extends StandardDetailView<Company> {
 
     @Subscribe
     public void onInitEvent(InitEvent event) {
-        countries = companyService.getCountries();
-        countryField.setItems(countries);
+//        Setting the items in the combobox component before the view is shown
+        countryField.setItems(companyService.getCountries());
     }
 
     @Subscribe
     public void onBeforeShowOfCompanyDetailView(BeforeShowEvent event) {
+//        Based on the value selected in the country combobox component setting the readOnly of city combobox
         cityField.setReadOnly(countryField.getValue() == null);
     }
 
     @Subscribe("countryField")
     public void onCountryFieldComponentValueChange(final AbstractField.ComponentValueChangeEvent<JmixComboBox<String>, String> event) {
-        cities = companyService.getCities(countryField.getValue());
+//        This method will be executed when the user select any one item from the combobox which changes the value
+        List<String> cities = companyService.getCities(countryField.getValue());
         cityField.setReadOnly(false);
         cityField.setItems(cities);
     }
-
 
 }

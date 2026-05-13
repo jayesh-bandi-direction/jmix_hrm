@@ -20,13 +20,10 @@ import io.jmix.securityflowui.authentication.LoginViewSupport;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
-import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -40,26 +37,29 @@ public class LoginView extends StandardView implements LocaleChangeObserver {
 
     private static final Logger log = LoggerFactory.getLogger(LoginView.class);
 
-    @Autowired
-    private CoreProperties coreProperties;
+    private final transient CoreProperties coreProperties;
 
-    @Autowired
-    private LoginViewSupport loginViewSupport;
+    private final transient LoginViewSupport loginViewSupport;
 
-    @Autowired
-    private MessageTools messageTools;
+    private final transient MessageTools messageTools;
 
     @ViewComponent
-    private JmixLoginForm login;
+    private transient JmixLoginForm login;
 
     @ViewComponent
-    private MessageBundle messageBundle;
+    private transient MessageBundle messageBundle;
 
     @Value("${ui.login.defaultUsername:}")
     private String defaultUsername;
 
     @Value("${ui.login.defaultPassword:}")
     private String defaultPassword;
+
+    public LoginView(CoreProperties coreProperties, LoginViewSupport loginViewSupport, MessageTools messageTools){
+        this.coreProperties = coreProperties;
+        this.loginViewSupport = loginViewSupport;
+        this.messageTools = messageTools;
+    }
 
     @Subscribe
     public void onInit(final InitEvent event) {

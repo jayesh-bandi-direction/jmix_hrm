@@ -22,12 +22,12 @@ import io.jmix.flowui.view.*;
 public class CompanyListView extends StandardListView<Company> {
 
     //    To sent notification
-    private final Notifications notifications;
+    private final transient Notifications notifications;
 
     //    To navigate to specified view
-    private final ViewNavigators viewNavigators;
+    private final transient ViewNavigators viewNavigators;
 
-    private final DialogWindows dialogWindows;
+    private final transient DialogWindows dialogWindows;
 
     //    Binding The DataGrid Component Present In Company List View (Descriptor)
     @ViewComponent
@@ -61,12 +61,12 @@ public class CompanyListView extends StandardListView<Company> {
 
     @Subscribe("customAddCompanyButton")
     public void addCompany(ClickEvent<Button> event) {
-//        dialogWindows.detail(this, Company.class)
-//                .newEntity()
-//                .open();
-        viewNavigators.detailView(this, Company.class)
+        dialogWindows.detail(this, Company.class)
                 .newEntity()
-                .navigate();
+                .open();
+//        viewNavigators.detailView(this, Company.class)
+//                .newEntity()
+//                .navigate();
     }
 
     @Subscribe("customEditCompanyButton")
@@ -77,13 +77,13 @@ public class CompanyListView extends StandardListView<Company> {
         if (company == null)
             notifications.create("Please Select Company").withPosition(Notification.Position.TOP_CENTER).show();
         else {
-//            dialogWindows.detail(this, Company.class)
-//                    .editEntity(company)
-//                    .open();
-
-            viewNavigators.detailView(this, Company.class)
+            dialogWindows.detail(this, Company.class)
                     .editEntity(company)
-                    .navigate();
+                    .open();
+
+//            viewNavigators.detailView(this, Company.class)
+//                    .editEntity(company)
+//                    .navigate();
         }
     }
 }

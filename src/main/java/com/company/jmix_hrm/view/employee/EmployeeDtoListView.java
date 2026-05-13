@@ -18,7 +18,6 @@ import io.jmix.flowui.Notifications;
 import io.jmix.flowui.ViewNavigators;
 import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.model.CollectionContainer;
-import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import io.jmix.gridexportflowui.action.ExcelExportAction;
 import io.jmix.gridexportflowui.action.JsonExportAction;
@@ -38,15 +37,11 @@ public class EmployeeDtoListView extends StandardListView<EmployeeDto> {
 
     //    binding the collection container from descriptor in controller to access it
     @ViewComponent
-    CollectionContainer<EmployeeDto> employeesDtoDc;
+    private transient CollectionContainer<EmployeeDto> employeesDtoDc;
 
     //    binding
     @ViewComponent
     DataGrid<EmployeeDto> employeesDtoDataGrid;
-
-    //    to bind the data loader from descriptor in controller
-    @ViewComponent
-    CollectionLoader<EmployeeDto> employeesDtoDl;
 
     @ViewComponent
     NativeLabel departmentLabel;
@@ -55,23 +50,23 @@ public class EmployeeDtoListView extends StandardListView<EmployeeDto> {
     NativeLabel companyLabel;
 
     @ViewComponent("employeesDtoDataGrid.excelExportAction")
-    ExcelExportAction excelExportAction;
+    private transient ExcelExportAction excelExportAction;
 
     @ViewComponent("employeesDtoDataGrid.jsonExportAction")
-    JsonExportAction jsonExportAction;
+    private transient JsonExportAction jsonExportAction;
 
     //    used to navigate
-    private final ViewNavigators viewNavigators;
+    private final transient ViewNavigators viewNavigators;
 
     //    used to show notifications on ui
-    private final Notifications notifications;
+    private final transient Notifications notifications;
 
     //    data manager is responsible for save, update and to fetch the records from the db
-    private final DataManager dataManager;
+    private final transient DataManager dataManager;
 
-    private final DepartmentService departmentService;
+    private final transient DepartmentService departmentService;
 
-    private final EmployeeService employeeService;
+    private final transient EmployeeService employeeService;
 
     public EmployeeDtoListView(ViewNavigators viewNavigators, Notifications notifications, DataManager dataManager, DepartmentService departmentService, EmployeeService employeeService) {
         this.viewNavigators = viewNavigators;
@@ -105,7 +100,7 @@ public class EmployeeDtoListView extends StandardListView<EmployeeDto> {
             employeeDto.setFirstname(employee.getUser().getFirstName());
             employeeDto.setLastname(employee.getUser().getLastName());
             employeeDto.setEmployeeCode(employee.getEmployeeCode());
-            employeeDto.setGender(employee.getGender().getId());
+            employeeDto.setGender(employee.getGender() != null ? employee.getGender().getId() : null);
             employeeDto.setDesignation(employee.getDesignation().getId());
             employeeDto.setDateOfBirth(employee.getDateOfBirth());
             employeeDto.setCreatedAt(employee.getCreatedAt());
@@ -173,7 +168,7 @@ public class EmployeeDtoListView extends StandardListView<EmployeeDto> {
 
     //    ReadyEvent is triggered after the UI is shown
     @Subscribe
-    public void onReady(ReadyEvent event) {
+    public void onReadyEmployeeDtoListView(ReadyEvent event) {
         excelExportAction.setFileName(departmentLabel.getText() + "_Employees");
         jsonExportAction.setFileName(departmentLabel.getText() + "_Employees");
     }

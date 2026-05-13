@@ -8,12 +8,15 @@ import com.company.jmix_hrm.exception.EmployeesExistInDepartmentException;
 import io.jmix.core.DataManager;
 import io.jmix.flowui.model.DataContext;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class DepartmentService {
 
     private final DataManager dataManager;
+
+    private static final String BASE = "_base";
 
     public DepartmentService(DataManager dataManager) {
         this.dataManager = dataManager;
@@ -59,20 +62,27 @@ public class DepartmentService {
         dataManager.remove(department);
     }
 
-
 //    get department with employees method
     public Department getDepartmentWithEmployees(UUID departmentId){
         return dataManager.load(Department.class) // Specifying which entity to fetch
                 .id(departmentId) // Specifying the department id
                 .fetchPlan(department -> { // method used to specify fetch plan
-                    department.addFetchPlan("_base"); // all fields of the department should be loaded
+                    department.addFetchPlan(BASE); // all fields of the department should be loaded
                     department.add("employees", employee -> { // department have list of employee, so we have to specify fetch plan for individual employee
-                        employee.addFetchPlan("_base"); // all fields of the employee should be loaded
-                        employee.add("user", "_base"); // all fields of the user should be loaded
+                        employee.addFetchPlan(BASE); // all fields of the employee should be loaded
+                        employee.add("user", BASE); // all fields of the user should be loaded
                     });
                 })
                 .optional()
                 .orElseThrow(() -> new DepartmentNotFoundException("Department Not Found With ID: " + departmentId));
+    }
+
+    public Optional<Department> getDepartmentWithCode(String departmentCode){
+        return dataManager.unconstrained()
+                .load(Department.class)
+                .query("select d from Department d where d.departmentCode = :departmentCode")
+                .parameter("departmentCode", departmentCode)
+                .optional();
     }
 
 }

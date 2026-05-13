@@ -5,13 +5,11 @@ import com.company.jmix_hrm.entity.Employee;
 import com.company.jmix_hrm.entity.User;
 import com.company.jmix_hrm.enums.Designation;
 import com.company.jmix_hrm.enums.Gender;
-import com.company.jmix_hrm.enums.ManagerDepartment;
 import com.company.jmix_hrm.service.EmployeeService;
 import com.company.jmix_hrm.view.main.MainView;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
@@ -26,21 +24,16 @@ import io.jmix.flowui.ViewNavigators;
 import io.jmix.flowui.component.combobox.EntityComboBox;
 import io.jmix.flowui.component.combobox.JmixComboBox;
 import io.jmix.flowui.component.datepicker.TypedDatePicker;
-import io.jmix.flowui.component.radiobuttongroup.JmixRadioButtonGroup;
 import io.jmix.flowui.component.textfield.TypedTextField;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.DataContext;
 import io.jmix.flowui.view.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.*;
 
 @Route(value = "users/:id", layout = MainView.class)
 @ViewController(id = "User.detail")
@@ -48,6 +41,10 @@ import java.util.UUID;
 @EditedEntityContainer("userDc")
 @DialogMode(width = "90%", height = "AUTO")
 public class UserDetailView extends StandardDetailView<User> {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailView.class);
+
+    private boolean newEntity;
 
     @ViewComponent
     private TypedTextField<String> usernameField;
@@ -62,27 +59,10 @@ public class UserDetailView extends StandardDetailView<User> {
 //    private ComboBox<String> timeZoneField;
 
     @ViewComponent
-    private MessageBundle messageBundle;
-
-    @Autowired
-    private Notifications notifications;
-
-    @Autowired
-    private EntityStates entityStates;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    private boolean newEntity;
-
-    @Autowired
-    private Metadata metadata;
-
-    @Autowired
-    private EmployeeService employeeService;
+    private transient MessageBundle messageBundle;
 
     @ViewComponent
-    private CollectionContainer<Employee> employeesDc;
+    private transient CollectionContainer<Employee> employeesDc;
 
     @ViewComponent
     private TypedTextField<String> firstNameField;
@@ -103,16 +83,7 @@ public class UserDetailView extends StandardDetailView<User> {
     private TypedDatePicker<LocalDate> employeeDateOfBirthField;
 
     @ViewComponent
-    private TypedTextField<String> employeeCodeField;
-
-    @ViewComponent
     private EntityComboBox<Employee> employeeManagerField;
-
-    @Autowired
-    private ViewNavigators viewNavigators;
-
-    @Autowired
-    private Dialogs dialogs;
 
     @ViewComponent
     private JmixButton saveNewEmployeeButton;
@@ -120,10 +91,91 @@ public class UserDetailView extends StandardDetailView<User> {
     @ViewComponent
     private JmixButton saveExistingEmployeeButton;
 
-    @Autowired
-    private CurrentAuthentication currentAuthentication;
     @ViewComponent
     private EntityComboBox<Department> departmentField;
+
+    @ViewComponent
+    private transient CollectionContainer<Department> departmentsDc;
+
+    private final transient CurrentAuthentication currentAuthentication;
+
+    private final transient Notifications notifications;
+
+    private final transient EntityStates entityStates;
+
+    private final transient PasswordEncoder passwordEncoder;
+
+    private final transient Metadata metadata;
+
+    private final transient EmployeeService employeeService;
+
+    private final transient ViewNavigators viewNavigators;
+
+    private final transient Dialogs dialogs;
+
+    public UserDetailView(CurrentAuthentication currentAuthentication, Notifications notifications, EntityStates entityStates, PasswordEncoder passwordEncoder, Metadata metadata, EmployeeService employeeService, ViewNavigators viewNavigators, Dialogs dialogs) {
+        this.currentAuthentication = currentAuthentication;
+        this.notifications = notifications;
+        this.entityStates = entityStates;
+        this.passwordEncoder = passwordEncoder;
+        this.metadata = metadata;
+        this.employeeService = employeeService;
+        this.viewNavigators = viewNavigators;
+        this.dialogs = dialogs;
+    }
+
+    private void showErrorNotification(String notificationMessage){
+        notifications.create(notificationMessage).withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
+    }
+
+    private boolean validateFields(){
+
+        if (!passwordField.getValue().equals(confirmPasswordField.getValue())) {
+            showErrorNotification("Password Does Not Match");
+            return false;
+        }
+
+        if (usernameField.getValue().isBlank()) {
+            showErrorNotification("Username Is Required");
+            return false;
+        }
+
+        if (firstNameField.getValue().isBlank()) {
+            showErrorNotification("FirstName Is Required");
+            return false;
+        }
+
+        if (lastNameField.getValue().isBlank()) {
+            showErrorNotification("LastName Is Required");
+            return false;
+        }
+
+        if (emailField.getValue().isBlank()) {
+            showErrorNotification("Email Is Required");
+            return false;
+        }
+
+        if (employeeDesignationField.getValue() == null) {
+            showErrorNotification("Designation Is Required");
+            return false;
+        }
+
+        if (genderField.getValue() == null) {
+            showErrorNotification("Gender Is Required");
+            return false;
+        }
+
+        if (employeeDateOfBirthField.getValue() == null) {
+            showErrorNotification("DOB Is Required");
+            return false;
+        }
+
+        if (passwordField.getValue().isBlank()) {
+            showErrorNotification("Password Cannot Be Blank");
+            return false;
+        }
+        return true;
+    }
 
     @Subscribe
     public void onInit(final InitEvent event) {
@@ -145,7 +197,7 @@ public class UserDetailView extends StandardDetailView<User> {
     }
 
     @Subscribe
-    public void onReady(final ReadyEvent event) {
+    public void onReadyUserDetailView(final ReadyEvent event) {
         if (entityStates.isNew(getEditedEntity())) {
             usernameField.focus();
         }
@@ -182,70 +234,48 @@ public class UserDetailView extends StandardDetailView<User> {
 
     @Subscribe
     public void onBeforeShowUserDetailView(BeforeShowEvent event) {
-        employeesDc.setItems(employeeService.getManagers());
+
+//        Current User Details
+        User currentUser = (User) currentAuthentication.getUser();
+        User currentUserDetails = employeeService.getEmployeeDepartmentCompanyUser(currentUser.getId());
+
+//        Fetching All The Managers Of The Current Employee Company
+        List<Employee> managers = employeeService.getManagers(currentUserDetails.getCompany());
+
+//        If The Current User Is System Admin Then Show All The Managers And If The User Is Manager Then Can Only Set Themselves In Data Container
+        if (currentUserDetails.getEmployee().getDesignation().equals(Designation.MANAGER)) {
+//            Storing The Current Manager
+            List<Employee> currentManager = managers.stream().filter(manager -> manager.getId().equals(currentUserDetails.getEmployee().getId())).toList();
+            employeesDc.setItems(currentManager);
+
+            List<Department> departments = new ArrayList<>();
+            departments.add(currentManager.getFirst().getDepartment());
+            departmentsDc.setItems(departments);
+
+        } else if (currentUserDetails.getEmployee().getDesignation().equals(Designation.SYSTEM_ADMIN)) {
+            employeesDc.setItems(managers);
+        } else if (currentUserDetails.getEmployee().getDesignation().equals(Designation.TRAINEE_SOFTWARE_ENGINEER)) {
+            employeeManagerField.setReadOnly(true);
+            departmentField.setReadOnly(true);
+        } else {
+            logger.info("Other User");
+        }
+
         User user = getEditedEntity();
         if (user.getUsername() == null) {
             saveNewEmployeeButton.setVisible(true);
             saveExistingEmployeeButton.setVisible(false);
+
         } else {
             saveNewEmployeeButton.setVisible(false);
             saveExistingEmployeeButton.setVisible(true);
         }
-        employeeManagerField.setVisible(false);
-        departmentField.setVisible(false);
     }
 
     @Subscribe(id = "saveNewEmployeeButton")
     public void onSaveNewEmployeeButtonClick(ClickEvent<Button> event) {
 
-        boolean canAdd = true;
-
-        if (!passwordField.getValue().equals(confirmPasswordField.getValue())) {
-            canAdd = false;
-            notifications.create("Password Does Not Match").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
-        }
-
-        if (usernameField.getValue().isBlank()) {
-            canAdd = false;
-            notifications.create("Username Is Required").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
-        }
-
-        if (firstNameField.getValue().isBlank()) {
-            canAdd = false;
-            notifications.create("FirstName Is Required").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
-        }
-
-        if (lastNameField.getValue().isBlank()) {
-            canAdd = false;
-            notifications.create("LastName Is Required").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
-        }
-
-        if (emailField.getValue().isBlank()) {
-            canAdd = false;
-            notifications.create("Email Is Required").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
-        }
-
-        if (employeeDesignationField.getValue() == null) {
-            canAdd = false;
-            notifications.create("Designation Is Required").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
-        }
-
-        if (genderField.getValue() == null) {
-            canAdd = false;
-            notifications.create("Gender Is Required").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
-        }
-
-        if (employeeDateOfBirthField.getValue() == null) {
-            canAdd = false;
-            notifications.create("DOB Is Required").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
-        }
-
-        if (passwordField.getValue().isBlank()) {
-            canAdd = false;
-            notifications.create("Password Cannot Be Blank").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_ERROR).show();
-        }
-
-        if (canAdd) {
+        if (validateFields()) {
             User user = getEditedEntity();
             DataContext dataContext = getViewData().getDataContext();
 
@@ -261,11 +291,6 @@ public class UserDetailView extends StandardDetailView<User> {
             if (employeeManagerField.getValue() == null && departmentField.getValue() == null)
                 notifications.create("Manager Or Department Is Required To Add Employee").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_WARNING).show();
             else {
-
-//            Employee managerEmployee = employeeManagerField.getValue();
-//            System.out.println("Manager: " + managerEmployee);
-
-
                 employeeService.addEmployee(user, dataContext, employeeManagerField.getValue(), departmentField.getValue());
 
                 dialogs.createMessageDialog()
@@ -297,13 +322,12 @@ public class UserDetailView extends StandardDetailView<User> {
         if (uniqueEmail && uniqueCode) {
 
             Employee manager = employeeManagerField.getValue();
-
             Department department = departmentField.getValue();
 
             if (manager == null && department == null)
                 notifications.create("Please Select Manager Or Department").withPosition(Notification.Position.TOP_CENTER).withThemeVariant(NotificationVariant.LUMO_WARNING).show();
             else {
-                employeeService.editEmployee(user, dataContext, employeeManagerField.getValue(), departmentField.getValue());
+                employeeService.editEmployee(user, dataContext, manager, department);
 
                 dialogs.createMessageDialog()
                         .withHeader("Success")
@@ -313,19 +337,16 @@ public class UserDetailView extends StandardDetailView<User> {
                 closeWithDefaultAction();
                 viewNavigators.view(this, UserListView.class)
                         .navigate();
-
             }
         }
     }
 
-    @Subscribe("radioButtonManagerDepartment")
-    public void onRadioButtonManagerDepartmentComponentValueChange(final AbstractField.ComponentValueChangeEvent<JmixRadioButtonGroup<ManagerDepartment>, ManagerDepartment> event) {
-        if (event.getValue().equals(ManagerDepartment.SET_MANAGER)) {
-            employeeManagerField.setVisible(true);
-            departmentField.setVisible(false);
-        } else {
-            employeeManagerField.setVisible(false);
-            departmentField.setVisible(true);
+    @Subscribe("employeeManagerField")
+    public void onEmployeeManagerFieldComponentValueChange(final AbstractField.ComponentValueChangeEvent<EntityComboBox<Employee>, Employee> event) {
+        if (event.getValue() != null) {
+            Employee manager = event.getValue();
+            departmentField.setValue(manager.getDepartment());
         }
     }
+
 }

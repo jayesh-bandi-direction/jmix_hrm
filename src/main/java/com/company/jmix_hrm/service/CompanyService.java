@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.*;
 
 @Service
@@ -56,12 +55,11 @@ public class CompanyService {
                 return List.of();
             }
 
-            return response.getBody().getData();
+            return data.getData();
 
         } catch (HttpClientErrorException | HttpServerErrorException exception) {
-            logger.info("Status Code: {}", exception.getStatusCode());
+            logger.error("Status Code: {}", exception.getStatusCode());
             throw new RuntimeException(exception.getMessage());
-
         }
     }
 

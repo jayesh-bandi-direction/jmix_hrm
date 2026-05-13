@@ -44,16 +44,16 @@ public class MainFragment extends Fragment<HorizontalLayout> {
     NativeLabel employeeCompanyValue;
 
     @ViewComponent
-    CollectionContainer<Employee> managerEmployeesDc;
+    private transient CollectionContainer<Employee> managerEmployeesDc;
 
     @ViewComponent
     TreeDataGrid<Employee> managerEmployeesTreeDataGrid;
 
-    private final EmployeeService employeeService;
+    private final transient EmployeeService employeeService;
 
-    private final CurrentAuthentication currentAuthentication;
+    private final transient CurrentAuthentication currentAuthentication;
 
-    private final DepartmentService departmentService;
+    private final transient DepartmentService departmentService;
 
     private static final String UNASSIGNED = "Unassigned";
 
@@ -74,8 +74,6 @@ public class MainFragment extends Fragment<HorizontalLayout> {
 //        Type casting to user
         User user = (User) userDetails;
 
-//        System.out.println(user);
-
 //        Calling the employee service method to fetch all the details of the logged-in user (employee, department and company)
         User userEmployee = employeeService.getEmployeeDepartmentCompanyUser(user.getId());
 
@@ -84,12 +82,12 @@ public class MainFragment extends Fragment<HorizontalLayout> {
         employeeDesignationValue.setText(userEmployee.getEmployee() == null ? UNASSIGNED : userEmployee.getEmployee().getDesignation().getId());
         employeeUsernameValue.setText(userEmployee.getUsername());
         employeeEmailValue.setText(userEmployee.getEmail() == null ? NOT_SPECIFIED : userEmployee.getEmail());
-        employeeDobValue.setText(userEmployee.getEmployee() == null? NOT_SPECIFIED : userEmployee.getEmployee().getDateOfBirth().toString());
-        employeeDepartmentValue.setText(userEmployee.getEmployee() == null? UNASSIGNED : userEmployee.getEmployee().getDepartment().getDepartmentName());
-        employeeCompanyValue.setText(userEmployee.getEmployee() == null? UNASSIGNED : userEmployee.getEmployee().getDepartment().getCompany().getCompanyName());
+        employeeDobValue.setText(userEmployee.getEmployee().getDateOfBirth() == null? NOT_SPECIFIED : userEmployee.getEmployee().getDateOfBirth().toString());
+        employeeDepartmentValue.setText(userEmployee.getEmployee().getDepartment() == null? UNASSIGNED : userEmployee.getEmployee().getDepartment().getDepartmentName());
+        employeeCompanyValue.setText(userEmployee.getCompany() == null? UNASSIGNED : userEmployee.getCompany().getCompanyName());
 
 //        Checking if there is employee object present for user and if the employee object has a role of manager
-        if(userEmployee.getEmployee() != null && userEmployee.getEmployee().getManager() == null){
+        if(userEmployee.getEmployee() != null && userEmployee.getEmployee().getManager() == null && userEmployee.getEmployee().getDepartment() != null){
 //            Calling department service method which fetches the department object along with the employees and respective user object
             Department department = departmentService.getDepartmentWithEmployees(userEmployee.getEmployee().getDepartment().getDepartmentId());
 //            Assigning the employees present in the department in data loader

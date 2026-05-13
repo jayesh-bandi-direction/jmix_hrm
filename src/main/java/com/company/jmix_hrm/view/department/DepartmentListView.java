@@ -32,17 +32,17 @@ public class DepartmentListView extends StandardListView<Department> {
     DataGrid<Department> departmentsDataGrid;
 
     @ViewComponent
-    CollectionLoader<Department> departmentsDl;
+    private transient CollectionLoader<Department> departmentsDl;
 
-    private final ViewNavigators viewNavigators;
+    private final transient ViewNavigators viewNavigators;
 
-    private final Notifications notifications;
+    private final transient Notifications notifications;
 
-    private final DepartmentService departmentService;
+    private final transient DepartmentService departmentService;
 
-    private final Dialogs dialogs;
+    private final transient Dialogs dialogs;
 
-    private final DialogWindows dialogWindows;
+    private final transient DialogWindows dialogWindows;
 
     public DepartmentListView(ViewNavigators viewNavigators, Notifications notifications, DepartmentService departmentService, Dialogs dialogs, DialogWindows dialogWindows) {
         this.viewNavigators = viewNavigators;

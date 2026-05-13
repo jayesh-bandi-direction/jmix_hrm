@@ -26,15 +26,6 @@ public interface ManagerResourceRole {
 
     @MenuPolicy(menuIds = {"userMenu", "departmentMenu"})
     @ViewPolicy(viewIds = {"User.list", "User.detail", "Employee.list", "Department.list", "Department.detail", "EmployeeDto.list"})
-//    @ViewPolicy(viewClasses = UserDetailView.class)
-//    @ViewPolicy(viewClasses = EmployeeListView.class)
-//    @ViewPolicy(viewClasses = DepartmentListView.class)
-//    @ViewPolicy(viewClasses = DepartmentDetailView.class)
-//    @ViewPolicy(viewClasses = EmployeeDtoListView.class)
-
-//    @ViewPolicy(viewClasses = RoleAssignmentView.class)
-//    @ViewPolicy(viewIds = "sec_ResourceRoleModel.lookup")
-//    @ViewPolicy(viewClasses = RoleAssignmentModel.class)
     void managerScreen();
 
     @EntityPolicy(entityClass = User.class, actions = EntityPolicyAction.ALL)
@@ -42,12 +33,6 @@ public interface ManagerResourceRole {
     @EntityPolicy(entityClass = Department.class, actions = EntityPolicyAction.ALL)
     @EntityPolicy(entityClass = Company.class, actions = EntityPolicyAction.READ)
     @EntityPolicy(entityClass = EmployeeDto.class, actions = EntityPolicyAction.ALL)
-
-//    @EntityPolicy(entityClass = UserSubstitutionEntity.class, actions = EntityPolicyAction.ALL)
-//    @EntityPolicy(entityClass = FilterConfiguration.class, actions = EntityPolicyAction.ALL)
-//    @EntityPolicy(entityClass = RoleAssignmentEntity.class, actions = EntityPolicyAction.ALL)
-//    @EntityPolicy(entityClass = RoleAssignmentModel.class, actions = EntityPolicyAction.ALL)
-
 //    If we don't specify the attribute policy then even though we have access to entity we will not be able to see the records
     @EntityAttributePolicy(entityClass = User.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityAttributePolicy(entityClass = Employee.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
+
 import javax.sql.DataSource;
 
 // @Push - This annotation is of vaadin, It enables server push (real time updates) from server to browser. Eg: UI updates instantly without refresh
@@ -26,9 +27,9 @@ import javax.sql.DataSource;
 @SpringBootApplication
 public class JmixHrmApplication implements AppShellConfigurator {
 
-    private final Environment environment;
+    private final transient Environment environment;
 
-    public JmixHrmApplication(Environment environment){
+    public JmixHrmApplication(Environment environment) {
         this.environment = environment;
     }
 
@@ -36,7 +37,7 @@ public class JmixHrmApplication implements AppShellConfigurator {
         SpringApplication.run(JmixHrmApplication.class, args);
     }
 
-//    PostgreSQL
+    //    PostgreSQL
     @Bean
     @Primary
     @ConfigurationProperties("main.datasource")
@@ -44,7 +45,7 @@ public class JmixHrmApplication implements AppShellConfigurator {
         return new DataSourceProperties();
     }
 
-//    @Bean - To create a bean
+    //    @Bean - To create a bean
 //    @Primary - To mark it as primary
 //    @ConfigurationProperties - Used to bind the value of property that are present in application.properites or .yml file
 //    HikariCP - It is connection pool that is responsible for reuse of database connection instead of new connection

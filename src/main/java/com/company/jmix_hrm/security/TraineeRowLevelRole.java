@@ -17,5 +17,5 @@ public interface TraineeRowLevelRole {
             entityClass = User.class,
             where = "{E}.id = :current_user_id")
     void traineeRowLevelRole();
-    // In java annotation must be attached to class, field or method that's why we write method(), this method acts as placeholder and is never executed()
+    // In java annotation must be attached to class, field or method that's why we write methodName(), this method acts as placeholder and is never executed()
 }

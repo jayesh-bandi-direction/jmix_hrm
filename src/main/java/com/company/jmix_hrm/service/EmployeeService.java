@@ -12,11 +12,9 @@ import io.jmix.flowui.model.DataContext;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -24,6 +22,8 @@ public class EmployeeService {
     private final DataManager dataManager;
 
     private final JavaMailSender javaMailSender;
+
+    private static final String BASE = "_base";
 
     public EmployeeService(DataManager dataManager, JavaMailSender javaMailSender) {
         this.dataManager = dataManager;
@@ -61,8 +61,8 @@ public class EmployeeService {
         return dataManager.load(User.class)
                 .id(userId)
                 .fetchPlan(userFp -> {
-                    userFp.addFetchPlan("_base");
-                    userFp.add("employee", "_base");
+                    userFp.addFetchPlan(BASE);
+                    userFp.add("employee", BASE);
                 })
                 .optional()
                 .orElseThrow(() -> new EmployeeNotFoundException("User Not Found With ID: " + userId));
@@ -73,12 +73,12 @@ public class EmployeeService {
         return dataManager.load(User.class)
                 .id(userId)
                 .fetchPlan(userFp -> {
-                    userFp.addFetchPlan("_base");
+                    userFp.addFetchPlan(BASE);
                     userFp.add("employee", employeeFp -> {
-                        employeeFp.addFetchPlan("_base");
+                        employeeFp.addFetchPlan(BASE);
                         employeeFp.add("department", departmentFp -> {
-                            departmentFp.addFetchPlan("_base");
-                            departmentFp.add("company", companyFp -> companyFp.addFetchPlan("_base"));
+                            departmentFp.addFetchPlan(BASE);
+                            departmentFp.add("company", companyFp -> companyFp.addFetchPlan(BASE));
                         });
                     });
                 })
@@ -93,10 +93,19 @@ public class EmployeeService {
                 .list();
     }
 
-    public List<Employee> getManagers() {
-        List<Employee> employees = dataManager.load(Employee.class)
-                .all().list();
-        return employees.stream().filter(employee -> employee.getDesignation().equals(Designation.MANAGER)).collect(Collectors.toList());
+    public List<Employee> getManagers(Company company) {
+        List<Employee> employees;
+        if (company != null) {
+            employees = dataManager.load(Employee.class)
+                    .query("select e from Employee e where e.department.company.companyId = :companyId")
+                    .parameter("companyId", company.getCompanyId())
+                    .list();
+        } else {
+            employees = dataManager.load(Employee.class)
+                    .all()
+                    .list();
+        }
+        return employees.stream().filter(employee -> employee.getDesignation().equals(Designation.MANAGER)).toList();
     }
 
     public boolean checkIfUserEmailIsUnique(String email) {
@@ -132,16 +141,12 @@ public class EmployeeService {
 //            We must first track the company, so that it will not be in detached state
             Company company = dataContext.merge(manager.getDepartment().getCompany());
             user.setCompany(company);
-
-            System.out.println("Company Of User: " + company.getCompanyName());
         } else {
             user.getEmployee().setDepartment(department);
 
 //            We must first track the company, so that it will not be in detached state
             Company company = dataContext.merge(department.getCompany());
             user.setCompany(company);
-
-            System.out.println("Company Of Department: " + department.getCompany().getCompanyName());
         }
         dataContext.save();
     }
@@ -159,25 +164,51 @@ public class EmployeeService {
     }
 
     public boolean checkIfCodeBelongsToSameUser(User user) {
-        Optional<User> optionalExistingUser = dataManager.load(User.class)
-                .query("select u from User u where u.employee.employeeCode = :code")
-                .parameter("code", user.getEmployee().getEmployeeCode())
-                .optional();
 
-        if (optionalExistingUser.isPresent()) {
-            return optionalExistingUser.get().getId().equals(user.getId());
+        if (user.getEmployee() != null) {
+            Optional<User> optionalExistingUser = dataManager.load(User.class)
+                    .query("select u from User u where u.employee.employeeCode = :code")
+                    .parameter("code", user.getEmployee().getEmployeeCode())
+                    .optional();
+
+            if (optionalExistingUser.isPresent()) {
+                return optionalExistingUser.get().getId().equals(user.getId());
+            }
         }
         return true;
     }
 
     public void editEmployee(User user, DataContext dataContext, Employee manager, Department department) {
+
+        User mergedUser = dataContext.merge(user);
+        Employee mergedEmployee = dataContext.merge(mergedUser.getEmployee());
+
         if (manager != null) {
-            user.getEmployee().setManager(manager);
-            user.getEmployee().setDepartment(manager.getDepartment());
+            Employee mergedManager = dataContext.merge(manager);
+            Department mergedDepartment = dataContext.merge(manager.getDepartment());
+            Company mergedCompany = dataContext.merge(manager.getDepartment().getCompany());
+            mergedEmployee.setManager(mergedManager);
+            mergedEmployee.setDepartment(mergedDepartment);
+            mergedUser.setCompany(mergedCompany);
+        } else {
+            Department mergedDepartment = dataContext.merge(department);
+            Company mergedCompany = dataContext.merge(department.getCompany());
+            mergedEmployee.setManager(null);
+            mergedEmployee.setDepartment(mergedDepartment);
+            mergedUser.setCompany(mergedCompany);
         }
-        else {
-            user.getEmployee().setDepartment(department);
-        }
+
+        mergedUser.setEmployee(mergedEmployee);
         dataContext.save();
     }
+
+    public Optional<User> findByUsername(String username) {
+        return dataManager
+                .unconstrained()
+                .load(User.class)
+                .query("select u from User u where u.username = :username")
+                .parameter("username", username)
+                .optional();
+    }
+
 }

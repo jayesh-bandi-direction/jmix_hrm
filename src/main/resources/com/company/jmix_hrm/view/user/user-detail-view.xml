@@ -76,19 +76,14 @@
             <!--                    <action id="entityOpenAction" type="entity_open"/>-->
             <!--                </actions>-->
             <!--            </entityPicker>-->
-            <radioButtonGroup id="radioButtonManagerDepartment"
-                              itemsEnum="com.company.jmix_hrm.enums.ManagerDepartment"/>
             <entityComboBox property="employee.manager" id="employeeManagerField" itemsContainer="employeesDc"/>
             <entityComboBox property="employee.department" id="departmentField" itemsContainer="departmentsDc"/>
-            <!--            <comboBox property="manager" dataContainer="employeesDc"/>-->
         </formLayout>
         <hbox id="detailActions">
             <!--            <button id="saveAndCloseButton" action="saveCloseAction"/>-->
-            <button id="saveNewEmployeeButton" icon="ADD_ACTION"
-                    text="msg://com.company.jmix_hrm.view.department/saveButton"
+            <button id="saveNewEmployeeButton" icon="ADD_ACTION" text="msg://com.company.jmix_hrm.view.department/saveButton"
                     classNames="background-add button-style" focusShortcut="ALT-A"/>
-            <button id="saveExistingEmployeeButton" icon="DETAIL_SAVE_ACTION"
-                    text="msg://com.company.jmix_hrm.view.department/saveButton"
+            <button id="saveExistingEmployeeButton" icon="DETAIL_SAVE_ACTION" text="msg://com.company.jmix_hrm.view.department/saveButton"
                     classNames="background-add button-style" focusShortcut="ALT-A"/>
             <button id="closeButton" action="closeAction" focusShortcut="ALT-C"/>
         </hbox>

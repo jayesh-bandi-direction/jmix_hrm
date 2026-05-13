@@ -33,11 +33,11 @@ public class UserFragment extends Fragment<HorizontalLayout> {
     @ViewComponent
     NativeLabel employeeDesignationLabel;
 
-    private final Messages messages;
+    private final transient Messages messages;
 
-    private final CurrentAuthentication currentAuthentication;
+    private final transient CurrentAuthentication currentAuthentication;
 
-    private final EmployeeService employeeService;
+    private final transient EmployeeService employeeService;
 
     public UserFragment(CurrentAuthentication currentAuthentication, EmployeeService employeeService, Messages messages){
         this.currentAuthentication = currentAuthentication;
@@ -65,7 +65,7 @@ public class UserFragment extends Fragment<HorizontalLayout> {
 //        Assigning text to value field
         employeeEmailValueLabel.setText(userExist.getEmail());
         employeeCodeValueLabel.setText(userExist.getEmployee() == null ? "admin" : userExist.getEmployee().getEmployeeCode());
-        employeeDesignationValueLabel.setText(userExist.getEmployee() == null ? "null" : userExist.getEmployee().getDesignation().getId());
+        employeeDesignationValueLabel.setText(userExist.getEmployee().getDesignation() == null ? "null" : userExist.getEmployee().getDesignation().getId());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.company.jmix_hrm.security;
 
+import com.company.jmix_hrm.entity.Company;
 import com.company.jmix_hrm.entity.Department;
 import com.company.jmix_hrm.entity.Employee;
 import com.company.jmix_hrm.entity.User;
@@ -32,10 +33,12 @@ public interface TraineeResourceRole {
     //    @EntityPolicy & @EntityAttributePolicy are used to specify which entity user can access and can modify
 //    If we don't specify the @EntityAttributePolicy then user cannot see the records of the specified entity
     @EntityPolicy(entityClass = User.class, actions = {EntityPolicyAction.READ, EntityPolicyAction.UPDATE})
-    @EntityAttributePolicy(entityClass = User.class, attributes = {"username", "firstName", "lastName", "email", "employee"}, action = EntityAttributePolicyAction.MODIFY)
+    @EntityAttributePolicy(entityClass = User.class, attributes = {"username", "firstName", "lastName", "email", "employee", "company"}, action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = Employee.class, actions = {EntityPolicyAction.READ, EntityPolicyAction.UPDATE})
-    @EntityAttributePolicy(entityClass = Employee.class, attributes = {"gender", "dateOfBirth", "department"}, action = EntityAttributePolicyAction.MODIFY)
+    @EntityAttributePolicy(entityClass = Employee.class, attributes = {"employeeCode", "gender", "dateOfBirth", "department", "manager"}, action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = Department.class, actions = EntityPolicyAction.READ)
     @EntityAttributePolicy(entityClass = Department.class, attributes = "*", action = EntityAttributePolicyAction.VIEW)
+    @EntityPolicy(entityClass = Company.class, actions = EntityPolicyAction.READ)
+    @EntityAttributePolicy(entityClass = Company.class, attributes = {"companyName"}, action = EntityAttributePolicyAction.VIEW)
     void employee();
 }

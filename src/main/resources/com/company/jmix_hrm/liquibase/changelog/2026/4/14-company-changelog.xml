@@ -6,29 +6,28 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
 
-    <changeSet id="1" author="jayesh">
+    <changeSet id="1" author="Jayesh">
         <createTable tableName="COMPANY">
             <column name="COMPANY_ID" type="uuid">
-                <constraints primaryKey="true" primaryKeyName="PK_COMPANY" />
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="COMPANY_NAME" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="COMPANY_CODE" type="varchar(255)">
-                <constraints nullable="false" unique="true" />
+                <constraints nullable="false"/>
             </column>
             <column name="CITY" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="COUNTRY" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CREATED_BY" type="VARCHAR(255)"/>
             <column name="CREATED_AT" type="TIMESTAMP"/>
             <column name="UPDATED_BY" type="VARCHAR(255)"/>
             <column name="UPDATED_AT" type="TIMESTAMP"/>
             <column name="VERSION" type="integer"/>
-
         </createTable>
     </changeSet>
 
