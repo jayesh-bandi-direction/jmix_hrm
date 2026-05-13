@@ -64,7 +64,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql:42.7.10'
 
 // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-    runtimeOnly 'com.mysql:mysql-connector-j:9.6.0'
+    implementation 'com.mysql:mysql-connector-j:9.7.0'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
