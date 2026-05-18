@@ -19,6 +19,11 @@
         </collection>
     </data>
 
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+
     <facets>
         <dataLoadCoordinator auto="true"/>
         <urlQueryParameters>
@@ -87,7 +92,10 @@
             </actions>
 
         </dataGrid>
-
+        <hbox id="lookupActions" visible="false">
+            <button id="selectButton" action="selectAction"/>
+            <button id="discardButton" action="discardAction"/>
+        </hbox>
         <hbox width="100%">
             <endSlot>
                 <simplePagination id="pagination" dataLoader="departmentsDl"/>

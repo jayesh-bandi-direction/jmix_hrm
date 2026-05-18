@@ -11,6 +11,7 @@ import com.vaadin.flow.component.Focusable;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.editor.EditorCloseEvent;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.router.QueryParameters;
@@ -137,6 +138,7 @@ public class DepartmentListView extends StandardListView<Department> {
             } catch (EmployeesExistInDepartmentException exception) {
                 notifications.create(exception.getMessage())
                         .withPosition(Notification.Position.TOP_CENTER)
+                        .withThemeVariant(NotificationVariant.LUMO_ERROR)
                         .show();
             }
         }

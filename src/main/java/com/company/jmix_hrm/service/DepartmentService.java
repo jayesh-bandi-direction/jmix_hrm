@@ -5,6 +5,7 @@ import com.company.jmix_hrm.entity.Department;
 import com.company.jmix_hrm.exception.DepartmentExistException;
 import com.company.jmix_hrm.exception.DepartmentNotFoundException;
 import com.company.jmix_hrm.exception.EmployeesExistInDepartmentException;
+import io.jmix.audit.EntityLog;
 import io.jmix.core.DataManager;
 import io.jmix.flowui.model.DataContext;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,11 @@ public class DepartmentService {
     private final DataManager dataManager;
 
     private static final String BASE = "_base";
+    private final EntityLog entityLog;
 
-    public DepartmentService(DataManager dataManager) {
+    public DepartmentService(DataManager dataManager, EntityLog entityLog) {
         this.dataManager = dataManager;
+        this.entityLog = entityLog;
     }
 
     //    Add department method
@@ -36,10 +39,11 @@ public class DepartmentService {
 
 //      This will save the record in the db but the data context still thinks it is not saved that's why a pop-up window is displayed when we try to
 //      navigate to other view before updating the data context
-//      dataManager.save(department);
+//      dataManager.save(newDepartment);
 
 //      Data context tracks all the changes done in the entity field in the ui and then will call the data manager to save in the db
         dataContext.save();
+//        entityLog.registerCreate(newDepartment);
     }
 
     //    edit department method

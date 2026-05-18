@@ -23,6 +23,11 @@ repositories {
 
 dependencies {
 
+//    audit dependency
+    implementation 'io.jmix.audit:jmix-audit-flowui-starter'
+    implementation 'io.jmix.audit:jmix-audit-starter'
+
+
 //    Add on - Italian Translation
     implementation 'io.jmix.translations:jmix-translations-it'
 
