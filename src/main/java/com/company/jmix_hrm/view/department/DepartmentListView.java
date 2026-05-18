@@ -6,19 +6,26 @@ import com.company.jmix_hrm.service.DepartmentService;
 import com.company.jmix_hrm.view.employee.EmployeeDtoListView;
 import com.company.jmix_hrm.view.main.MainView;
 import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Focusable;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.grid.editor.EditorCloseEvent;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Route;
+import io.jmix.core.DataManager;
 import io.jmix.flowui.DialogWindows;
 import io.jmix.flowui.Dialogs;
 import io.jmix.flowui.Notifications;
 import io.jmix.flowui.ViewNavigators;
 import io.jmix.flowui.component.grid.DataGrid;
+import io.jmix.flowui.component.grid.editor.DataGridEditor;
+import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
+
 import java.time.format.DateTimeFormatter;
 
 @Route(value = "departments", layout = MainView.class)
@@ -28,11 +35,15 @@ import java.time.format.DateTimeFormatter;
 @DialogMode(width = "90%")
 public class DepartmentListView extends StandardListView<Department> {
 
-    @ViewComponent
-    DataGrid<Department> departmentsDataGrid;
 
     @ViewComponent
     private transient CollectionLoader<Department> departmentsDl;
+
+    @ViewComponent
+    private transient CollectionContainer<Department> departmentsDc;
+
+    @ViewComponent
+    DataGrid<Department> departmentsDataGrid;
 
     private final transient ViewNavigators viewNavigators;
 
@@ -44,12 +55,15 @@ public class DepartmentListView extends StandardListView<Department> {
 
     private final transient DialogWindows dialogWindows;
 
-    public DepartmentListView(ViewNavigators viewNavigators, Notifications notifications, DepartmentService departmentService, Dialogs dialogs, DialogWindows dialogWindows) {
+    private final transient DataManager dataManager;
+
+    public DepartmentListView(ViewNavigators viewNavigators, Notifications notifications, DepartmentService departmentService, Dialogs dialogs, DialogWindows dialogWindows, DataManager dataManager) {
         this.viewNavigators = viewNavigators;
         this.notifications = notifications;
         this.departmentService = departmentService;
         this.dialogs = dialogs;
         this.dialogWindows = dialogWindows;
+        this.dataManager = dataManager;
     }
 
 
@@ -64,6 +78,18 @@ public class DepartmentListView extends StandardListView<Department> {
         notifications.create("Please Select Department!")
                 .withPosition(Notification.Position.TOP_CENTER)
                 .show();
+    }
+
+    @Subscribe
+    public void onInitEventDepartment(InitEvent event) {
+        DataGridEditor<Department> departmentDataGridEditor = departmentsDataGrid.getEditor();
+        departmentsDataGrid.addItemDoubleClickListener(e -> {
+            departmentDataGridEditor.editItem(e.getItem());
+            Component editorComponent = e.getColumn().getEditorComponent();
+            if (editorComponent instanceof Focusable) {
+                ((Focusable) editorComponent).focus();
+            }
+        });
     }
 
     //    Specifying the action to be performed when clicked on view employees button
@@ -161,6 +187,21 @@ public class DepartmentListView extends StandardListView<Department> {
 //        LitRenderer is used to write HTML directly without using the java component class, it is lightweight and fast as compared to component renderer
         return LitRenderer.<Department>of("<b>${item.createdAt}</b>")
                 .withProperty("createdAt", department -> department.getCreatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyy' 'HH:mm:ss")));
+    }
+
+
+    //    To save the updated record on database when editor is closed
+    @Install(to = "departmentsDataGrid.@editor", subject = "closeListener")
+    public void onEditorCloseDepartment(EditorCloseEvent<Department> event) {
+        Department department = event.getItem();
+        if (departmentService.isDepartmentUniqueInCompany(department.getDepartmentName(), department.getCompany().getCompanyCode())) {
+            dataManager.save(department);
+            dialogs.createMessageDialog().withHeader("Success").withText("Department Updated!").open();
+        } else {
+            departmentsDc.setItems(dataManager.load(Department.class).all().list());
+            dialogs.createMessageDialog().withHeader("Unique Constraint").withText("Department Exist In Company").open();
+        }
+        departmentsDc.setItems(dataManager.load(Department.class).all().list());
     }
 
 }

@@ -40,9 +40,9 @@
         <accordion width="100%">
             <accordionPanel summaryText="Actions">
                 <hbox width="100%">
-                    <!--                    <button id="createDepartmentButton" action="departmentsDataGrid.createDepartmentAction" />-->
-                    <!--                    <button id="removeDepartmentButton" action="departmentsDataGrid.removeDepartmentAction" />-->
-                    <!--                    <button id="editDepartmentButton" action="departmentsDataGrid.editDepartmentAction" />-->
+                    <!--                                        <button id="createDepartmentButton" action="departmentsDataGrid.createDepartmentAction" />-->
+                    <!--                                        <button id="removeDepartmentButton" action="departmentsDataGrid.removeDepartmentAction" />-->
+                    <!--                                        <button id="editDepartmentButton" action="departmentsDataGrid.editDepartmentAction" />-->
                     <button id="addDepartmentCustomButton" icon="ADD_ACTION" text="msg://saveButton"
                             classNames="background-add button-style" focusShortcut="ALT-A"/>
                     <button id="editDepartmentCustomButton" icon="EDIT_ACTION" text="msg://editButton"
@@ -58,27 +58,31 @@
         <dataGrid id="departmentsDataGrid" dataContainer="departmentsDc">
 
             <columns>
-                <column property="departmentCode"/>
-                <column property="departmentName"/>
+                <column property="departmentCode" editable="true"/>
+                <column property="departmentName" editable="true"/>
                 <column property="company.companyName"/>
                 <column property="createdAt"/>
+                <!--                <editorActionsColumn>-->
+                <!--                    <editButton text="Edit" icon="PENCIL"/>-->
+                <!--                    <closeButton text="Close" icon="CLOSE"/>-->
+                <!--                </editorActionsColumn>-->
             </columns>
 
             <actions>
 
-                <action id="createDepartmentAction" type="list_create">
-                    <properties>
-                        <property name="openMode" value="DIALOG"/>
-                    </properties>
-                </action>
+                <!--                <action id="createDepartmentAction" type="list_create">-->
+                <!--                    <properties>-->
+                <!--                        <property name="openMode" value="DIALOG"/>-->
+                <!--                    </properties>-->
+                <!--                </action>-->
 
-                <action id="editDepartmentAction" type="list_edit">
-                    <properties>
-                        <property name="openMode" value="DIALOG"/>
-                    </properties>
-                </action>
+                <!--                <action id="editDepartmentAction" type="list_edit">-->
+                <!--                    <properties>-->
+                <!--                        <property name="openMode" value="DIALOG"/>-->
+                <!--                    </properties>-->
+                <!--                </action>-->
 
-                <action id="removeDepartmentAction" type="list_remove"/>
+                <!--                <action id="removeDepartmentAction" type="list_remove"/>-->
 
             </actions>
 

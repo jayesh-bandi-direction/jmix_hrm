@@ -14,7 +14,6 @@
     </facets>
 
     <layout>
-
         <hbox width="100%">
             <startSlot>
                 <button id="backButtonToDepartment" icon="ARROW_LEFT" focusShortcut="ESCAPE"/>
@@ -53,6 +52,7 @@
                 <action id="jsonExportAction" type="grdexp_jsonExport"/>
             </actions>
         </dataGrid>
+
 
     </layout>
 </view>

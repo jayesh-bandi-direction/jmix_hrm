@@ -45,7 +45,7 @@
     </facets>
     <layout>
         <formLayout id="form" dataContainer="userDc">
-            <textField id="usernameField" property="username" readOnly="true"/>
+            <textField id="usernameField" property="username" readOnly="true" valueChangeMode="EAGER"/>
             <passwordField id="passwordField"
                            label="msg://com.company.jmix_hrm.entity/User.password"
                            required="true"
@@ -54,13 +54,13 @@
                            label="msg://confirmPassword"
                            required="true"
                            visible="false"/>
-            <textField id="firstNameField" property="firstName"/>
-            <textField id="lastNameField" property="lastName"/>
-            <textField id="emailField" property="email"/>
+            <textField id="firstNameField" property="firstName" valueChangeMode="EAGER"/>
+            <textField id="lastNameField" property="lastName" valueChangeMode="EAGER"/>
+            <textField id="emailField" property="email" valueChangeMode="EAGER"/>
 
             <!--            <comboBox id="timeZoneField" property="timeZoneId" clearButtonVisible="true"/>-->
             <checkbox id="activeField" property="active"/>
-            <textField id="employeeCodeField" property="employee.employeeCode"/>
+            <textField id="employeeCodeField" property="employee.employeeCode" valueChangeMode="EAGER"/>
             <datePicker id="employeeDateOfBirthField" property="employee.dateOfBirth"/>
             <radioButtonGroup itemsEnum="com.company.jmix_hrm.entity.Gender" property="employee.gender"
                               id="genderField"/>
@@ -83,7 +83,8 @@
             <!--            <button id="saveAndCloseButton" action="saveCloseAction"/>-->
             <button id="saveNewEmployeeButton" icon="ADD_ACTION" text="msg://com.company.jmix_hrm.view.department/saveButton"
                     classNames="background-add button-style" focusShortcut="ALT-A"/>
-            <button id="saveExistingEmployeeButton" icon="DETAIL_SAVE_ACTION" text="msg://com.company.jmix_hrm.view.department/saveButton"
+            <button id="saveExistingEmployeeButton" icon="DETAIL_SAVE_ACTION"
+                    text="msg://com.company.jmix_hrm.view.department/updateButton"
                     classNames="background-add button-style" focusShortcut="ALT-A"/>
             <button id="closeButton" action="closeAction" focusShortcut="ALT-C"/>
         </hbox>

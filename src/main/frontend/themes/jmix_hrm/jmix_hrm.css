@@ -1,122 +1,110 @@
-/* Buttons styles */
-
-.background-green{
-    background-color: #3cb371;
+/* Base Button Layout & Transitions */
+.button-style,
+[class^="background-"] {
+    padding: 6px 14px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out; /* Smooth transition for background and color change */
 }
 
-.background-gray{
-    background-color: #616161;
-}
+/* --- Solid Status Badges / Buttons --- */
+.background-green { background-color: #2e7d32; color: white; border: 1px solid transparent; }
+.background-gray  { background-color: #64748b; color: white; border: 1px solid transparent; }
 
-.background-view{
-    background-color: white;
-    color: #3B38A0;
-    border: 2px solid #3B38A0;
-}
+/* --- Interactive Outline Action Buttons --- */
 
-.background-view:hover{
-    background-color: #3B38A0;
-    color: white;
-    transition: 0.3s;
-}
+/* View (Updated to your brand color #3D45AA) */
+.background-view { color: #3D45AA; border: 1.5px solid #3D45AA; background-color: transparent; }
+.background-view:hover { background-color: #3D45AA; color: white; }
 
-.background-remove{
-    background-color: white;
-    color: red;
-    border: 2px solid red;
-}
+/* Add */
+.background-add { color: #006BFF; border: 1.5px solid #006BFF; background-color: transparent; }
+.background-add:hover { background-color: #006BFF; color: white; }
 
-.background-remove:hover{
-    background-color: red;
-    color: white;
-    transition: 0.3s;
-}
+/* Edit */
+.background-edit { color: #982598; border: 1.5px solid #982598; background-color: transparent; }
+.background-edit:hover { background-color: #982598; color: white; }
 
-.background-edit{
-    background-color: white;
-    color: #982598;
-    border: 2px solid #982598;
-}
+/* Excel Export */
+.background-excel { color: #1e7e34; border: 1.5px solid #1e7e34; background-color: transparent; }
+.background-excel:hover { background-color: #1e7e34; color: white; }
 
-.background-edit:hover{
-    background-color: #982598;
-    color: white;
-    transition: 0.3s;
-}
+/* JSON Export */
+.background-json { color: #4f46e5; border: 1.5px solid #4f46e5; background-color: transparent; }
+.background-json:hover { background-color: #4f46e5; color: white; }
 
-.background-add{
-    background-color: white;
-    color: #006BFF;
-    border: 2px solid #006BFF;
-}
+/* Remove / Delete */
+.background-remove { color: #ef4444; border: 1.5px solid #ef4444; background-color: transparent; }
+.background-remove:hover { background-color: #ef4444; color: white; }
 
-.background-add:hover{
-    background-color: #006BFF;
-    color: white;
-    transition: 0.3s;
-}
-
-.button-style{
-    padding: 8px 12px;
-}
-
-.background-excel{
-    background-color: white;
-    color: #5B7E3C;
-    border: 2px solid #5B7E3C;
-}
-
-.background-excel:hover{
-    background-color: #5B7E3C;
-    color: white;
-    transition: 0.3s;
-}
-
-.background-json{
-    background-color: white;
-    color: #1A05A2;
-    border: 2px solid #1A05A2;
-}
-
-.background-json:hover{
-    background-color: #1A05A2;
-    color: white;
-    transition: 0.3s;
-}
-
-.background-unlink{
-    background-color: white;
-    color: #9B0F06;
-    border: 2px solid #9B0F06;
-}
-
-.background-unlink:hover{
-    background-color: #9B0F06;
-    color: white;
-    transition: 0.3s
-}
-
+/* Unlink */
+.background-unlink { color: #b91c1c; border: 1.5px solid #b91c1c; background-color: transparent; }
+.background-unlink:hover { background-color: #b91c1c; color: white; }
 
 
 /* User fragment styles */
+.user-horizontal-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 24px; /* Reduced vertical height for a sleek ribbon profile */
+    background-color: #ffffff;
+    border-radius: 12px;
 
-.user-horizontal-box{
-    border: 2px solid #3D45AA;
-    padding: 20px 20px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 2px 2px #3D45AA;
+    /* Modern shadow matching your cards instead of harsh thick outlines */
+    box-shadow: 0 4px 16px rgba(61, 69, 170, 0.06),
+                0 1px 2px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(61, 69, 170, 0.12);
 }
 
-.user-sub-box{
+/* Sub-boxes (Individual Pairs) */
+.user-sub-box {
+    flex: 1; /* Automatically splits the width into 3 equal pieces on 1 line */
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: center;
+    gap: 8px; /* Adds a tight, neat space between the Label and Value */
+    padding: 4px 8px;
 }
 
+/* Optional border dividers between the three data groups */
+.user-sub-box:not(:last-child) {
+    border-right: 1px solid rgba(61, 69, 170, 0.15);
+}
+
+/* --- Internal Utility Classes for typography alignment --- */
+
+.user-sub-box .uppercase.font-bold {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #64748b; /* Clean professional slate gray for labels */
+}
+
+.user-sub-box .font-medium {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #1e293b; /* Premium crisp text color for values */
+}
+
+
+/* Tabs Container */
+.tabs-container::part(tabs) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
 
 
 /* Main fragment styles */
-
 .main-fragment {
     padding: 30px 60px;
     width: 100%;
@@ -132,48 +120,236 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 12px 0; /* Gives the title a bit of breathing room */
 }
 
 .main-fragment-title {
     text-transform: uppercase;
-    font-size: 26px;
-    font-weight: bold;
-    letter-spacing: 8px;
+    font-size: 1.5rem; /* Scaled down slightly to stay elegant with letter-spacing */
+    font-weight: 700;
+    letter-spacing: 6px; /* Slightly tightened for better readability while keeping the wide look */
+    color: #1e293b; /* Crisp dark tone that matches your profile view text */
+    line-height: 1.2;
+    text-align: center;
+
+    /* Subtle bottom accent lines or glows can be added here if needed,
+       but keeping it plain perfectly preserves the clean aesthetic */
 }
 
+/* Container styling */
 .main-fragment-detail-div {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 30px;
+    align-items: stretch;
+    gap: 16px;
+    padding: 6px;
+    background-color: #fcfcfd;
+    border-radius: 12px;
 }
 
+/* Column Cards */
 .main-fragment-detail-div > div {
     flex: 1;
-    padding: 20px;
+    padding: 16px;
     border-radius: 10px;
-    box-shadow: 2px 2px 2px 2px #3D45AA;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(61, 69, 170, 0.06),
+                0 1px 2px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(61, 69, 170, 0.08);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Column Card Hover Effect */
+.main-fragment-detail-div > div:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(61, 69, 170, 0.12);
+    border-color: rgba(61, 69, 170, 0.25);
+}
+
+/* Individual Row Items */
 .label-value-div {
     display: flex;
     justify-content: space-between;
-    padding: 8px 12px;
+    align-items: center;
+    padding: 6px 10px;
+    margin-bottom: 2px;
     border-radius: 6px;
-    transition: 0.3s;
+    background: transparent;
+    transition: all 0.2s ease;
 }
 
+/* Remove margin from the last row item */
+.label-value-div:last-child {
+    margin-bottom: 0;
+}
+
+/* Row Item Hover Effect */
+.label-value-div:hover {
+    background-color: rgba(61, 69, 170, 0.05);
+    padding-left: 14px;
+}
+
+/* ======================================================= */
+/* TEXT STYLING (Labels & Values)                          */
+/* ======================================================= */
+
+/* Label Styling (Left side) */
 .main-fragment-field-label {
+    font-size: 0.88rem;
     font-weight: 600;
+    color: #64748b; /* Professional muted slate gray */
+    letter-spacing: 0.2px;
+    transition: color 0.2s ease;
 }
 
-.employees-list-tree-data-grid{
-    box-shadow: 2px 2px 2px 2px #3D45AA;
+/* Text Value Styling (Right side) */
+[id$="Value"] {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #334155;
+    text-align: right;
+    transition: color 0.2s ease; /* Matches the label transition precisely */
+}
+
+/* Combined Interactive Hover State for Both Elements */
+.label-value-div:hover .main-fragment-field-label,
+.label-value-div:hover [id$="Value"] {
+    color: #3D45AA; /* Both label and value turn into your brand color together */
+}
+
+/* Tree Data Grid Container */
+.employees-list-tree-data-grid {
     border-radius: 10px;
+    background: #ffffff;
+
+    /* Modern shadow that matches your profile view cards */
+    box-shadow: 0 4px 16px rgba(61, 69, 170, 0.06),
+                0 1px 2px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(61, 69, 170, 0.12);
+    overflow: hidden; /* Ensures grid contents don't break the rounded corners */
 }
 
-.active-field-style{
-    background-color: green;
-    padding: 2px 6px;
-    text-transform: uppercase;
+/* Optional: Polishing Vaadin parts inside the Jmix TreeDataGrid */
+.employees-list-tree-data-grid::part(header-cell) {
+    background-color: #fcfcfd;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(61, 69, 170, 0.08);
+}
+
+.employees-list-tree-data-grid::part(cell) {
+    font-size: 0.92rem;
+    color: #334155;
+    padding: 8px 12px;
+}
+
+/* Subtle row hover highlighting that pulls your brand color */
+.employees-list-tree-data-grid::part(row):hover {
+    background-color: rgba(61, 69, 170, 0.04);
+    color: #3D45AA;
+}
+
+/* span element for active field in user list view */
+/* Badge Container for Active/Inactive Column */
+.parent-span {
+    display: inline-flex; /* Changed from flex to inline-flex to keep badge scaling tight */
+    align-items: center;
+    justify-content: center;
+    gap: 6px;             /* Clean spacing between icon and text */
+    padding: 4px 10px;    /* Clean spacing inside the badge pill */
+    font-size: 0.78rem;   /* Standard crisp micro-text size for status tags */
+    letter-spacing: 0.3px;
+    border-radius: 6px;
+    width: fit-content;   /* Overrides the harsh 80% width so the badge wraps its contents perfectly */
+}
+
+/* Precise Icon Dimension Control inside the Renderer */
+.icon-size {
+    display: inline-block;
+    width: 14px !important;  /* Elevated slightly from 12px so Vaadin icons render clearly without blur */
+    height: 14px !important; /* Added !important to guarantee control over Vaadin's internal svg sizes */
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/* */
+/* Main DataGrid Container */
+#employeesDtoDataGrid {
+    border-radius: 10px;
+    background: #ffffff;
+
+    /* Matches your card and TreeDataGrid shadow profile */
+    box-shadow: 0 4px 16px rgba(61, 69, 170, 0.06),
+                0 1px 2px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(61, 69, 170, 0.12);
+    overflow: hidden; /* Keeps cell backgrounds from overlapping the rounded corners */
+}
+
+/* Header Cells Polishing */
+#employeesDtoDataGrid::part(header-cell) {
+    background-color: #f8fafc; /* Crisp off-white */
+    color: #475569;            /* Clean slate gray text */
+    font-weight: 600;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(61, 69, 170, 0.08);
+}
+
+/* Regular Data Cells Polishing */
+#employeesDtoDataGrid::part(cell) {
+    font-size: 0.92rem;
+    color: #334155;            /* Matches your primary text fields */
+    padding: 10px 14px;        /* Clean vertical/horizontal row breathing room */
+}
+
+/* Row Hover Interaction */
+#employeesDtoDataGrid::part(row):hover {
+    background-color: rgba(61, 69, 170, 0.04); /* Soft tint on layout hover */
+}
+
+/* Active / Selected Row (Framework Standard) */
+#employeesDtoDataGrid::part(row)[selected] {
+    background-color: rgba(61, 69, 170, 0.1);
+    color: #3D45AA;            /* Text changes to your primary brand color when row is active */
+}
+
+/* Main Departments DataGrid Container */
+#departmentsDtoDataGrid {
+    border-radius: 10px;
+    background: #ffffff;
+
+    /* Perfect match to your app's shadow and border system */
+    box-shadow: 0 4px 16px rgba(61, 69, 170, 0.06),
+                0 1px 2px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(61, 69, 170, 0.12);
+    overflow: hidden; /* Clips row background colors inside the rounded border */
+}
+
+/* Header Grid Styling */
+#departmentsDtoDataGrid::part(header-cell) {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(61, 69, 170, 0.08);
+}
+
+/* Row Data Cell Styling */
+#departmentsDtoDataGrid::part(cell) {
+    font-size: 0.92rem;
+    color: #334155;
+    padding: 10px 14px;
+}
+
+/* Hover State over Department Rows */
+#departmentsDtoDataGrid::part(row):hover {
+    background-color: rgba(61, 69, 170, 0.04);
+}
+
+/* Selected Department Row State */
+#departmentsDtoDataGrid::part(row)[selected] {
+    background-color: rgba(61, 69, 170, 0.1);
+    color: #3D45AA; /* Highlights data using your brand color */
 }

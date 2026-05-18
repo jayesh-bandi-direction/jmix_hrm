@@ -8,8 +8,10 @@ import com.company.jmix_hrm.exception.EmployeesExistInDepartmentException;
 import io.jmix.core.DataManager;
 import io.jmix.flowui.model.DataContext;
 import org.springframework.stereotype.Service;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 
 @Service
 public class DepartmentService {
@@ -83,6 +85,14 @@ public class DepartmentService {
                 .query("select d from Department d where d.departmentCode = :departmentCode")
                 .parameter("departmentCode", departmentCode)
                 .optional();
+    }
+
+    public boolean isDepartmentUniqueInCompany(String departmentName, String companyCode){
+        List<Department> departments = dataManager.load(Department.class)
+                .query("select d from Department d where d.company.companyCode= :companyCode")
+                .parameter("companyCode", companyCode)
+                .list();
+        return departments.stream().filter(department -> department.getDepartmentName().equalsIgnoreCase(departmentName)).toList().isEmpty();
     }
 
 }

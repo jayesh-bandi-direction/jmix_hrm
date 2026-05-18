@@ -3,11 +3,12 @@
 
     <data>
         <collection id="managerEmployeesDc" class="com.company.jmix_hrm.entity.Employee">
-            <fetchPlan extends="_base"/>
+            <fetchPlan extends="_base">
+                <property name="user" fetchPlan="_base"/>
+            </fetchPlan>
             <loader id="managerEmployeesDl"/>
         </collection>
     </data>
-
 
     <content>
         <!--        Will show the current logged-in user -->
@@ -17,8 +18,21 @@
                 <nativeLabel id="mainFragmentTitle" text="msg://com.company.jmix_hrm.view.main/MainView.title"
                              classNames="main-fragment-title"/>
             </div>
+
+            <!--            Tab Container -->
+            <tabs id="tabsContainer" classNames="tabs-container">
+                <tab id="profileTab">
+                    <icon icon="USER"/>
+                    <span text="Profile"/>
+                </tab>
+                <tab id="treeDataGridTab">
+                    <icon icon="USERS"/>
+                    <span text="msg://employees"/>
+                </tab>
+            </tabs>
+
             <!-- User detail div -->
-            <div classNames="main-fragment-detail-div">
+            <div classNames="main-fragment-detail-div" id="profileDiv">
                 <div>
                     <div classNames="label-value-div">
                         <nativeLabel id="employeeNameLabel"

@@ -50,6 +50,8 @@
                         classNames="background-edit button-style" icon="EDIT_ACTION" focusShortcut="ALT-E"/>
                 <button id="removeButton" action="usersDataGrid.removeAction" focusShortcut="ALT-R"/>
                 <button id="showRoleAssignmentsButton" action="usersDataGrid.showRoleAssignmentsAction"/>
+                <button id="Excel" classNames="button-style background-excel" action="usersDataGrid.excelButton" icon="EXCEL_EXPORT_ACTION"
+                        text="msg://com.company.jmix_hrm.view.department/excelButton"/>
                 <dropdownButton id="additionalButton" text="msg://additionalMenu" icon="COG">
                     <items>
                         <actionItem id="changePasswordItem" ref="usersDataGrid.changePasswordAction"/>
@@ -58,9 +60,6 @@
                     </items>
                 </dropdownButton>
             </startSlot>
-            <endSlot>
-                <simplePagination id="pagination" dataLoader="usersDl" itemsPerPageDefaultValue="10"/>
-            </endSlot>
         </hbox>
         <dataGrid id="usersDataGrid"
                   width="100%"
@@ -85,6 +84,7 @@
                 <action id="changePasswordAction" type="sec_changePassword"/>
                 <action id="resetPasswordAction" type="sec_resetPassword"/>
                 <action id="showUserSubstitutionsAction" type="sec_showUserSubstitutions"/>
+                <action id="excelButton" type="grdexp_excelExport"/>
             </actions>
             <columns resizable="true">
                 <column property="username"/>
@@ -104,6 +104,11 @@
         <hbox id="lookupActions" visible="false">
             <button id="selectButton" action="selectAction"/>
             <button id="discardButton" action="discardAction"/>
+        </hbox>
+        <hbox width="100%">
+            <endSlot>
+                <simplePagination id="pagination" dataLoader="usersDl"/>
+            </endSlot>
         </hbox>
     </layout>
 </view>

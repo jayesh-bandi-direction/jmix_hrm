@@ -19,12 +19,12 @@
 
     <layout>
         <formLayout id="companyForm" dataContainer="companyDc">
-            <textField id="companyCodeField" property="companyCode"/>
-            <textField id="companyNameField" property="companyName"/>
+            <textField id="companyCodeField" property="companyCode" valueChangeMode="EAGER"/>
+            <textField id="companyNameField" property="companyName" valueChangeMode="EAGER"/>
             <!--            <textField id="cityField" property="city" />-->
             <!--            <textField id="countryField" property="country" />-->
-            <comboBox id="countryField" property="country"/>
-            <comboBox id="cityField" property="city"/>
+            <comboBox id="countryField" property="country" />
+            <comboBox id="cityField" property="city" />
         </formLayout>
 
         <hbox>

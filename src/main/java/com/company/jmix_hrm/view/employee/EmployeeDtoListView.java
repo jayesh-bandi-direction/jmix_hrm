@@ -16,12 +16,16 @@ import com.vaadin.flow.router.Route;
 import io.jmix.core.DataManager;
 import io.jmix.flowui.Notifications;
 import io.jmix.flowui.ViewNavigators;
+import io.jmix.flowui.component.PaginationComponent;
 import io.jmix.flowui.component.grid.DataGrid;
+import io.jmix.flowui.component.pagination.SimplePagination;
+import io.jmix.flowui.data.pagination.PaginationDataLoader;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.view.*;
 import io.jmix.gridexportflowui.action.ExcelExportAction;
 import io.jmix.gridexportflowui.action.JsonExportAction;
 import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

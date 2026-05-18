@@ -49,7 +49,7 @@ public class EmployeeService {
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom("jb.bandi.direction@gmail.com");
-        simpleMailMessage.setTo("jb.bandi.direction@gmail.com");
+        simpleMailMessage.setTo(employee.getUser().getEmail());
         simpleMailMessage.setSubject("Unassigned From " + department);
         simpleMailMessage.setText(employee.getUser().getFirstName() + " " + employee.getUser().getLastName() + " Is Unassigned From " + department);
 
@@ -211,4 +211,11 @@ public class EmployeeService {
                 .optional();
     }
 
+    public long getUsersCount() {
+        return dataManager
+                .load(User.class)
+                .all()
+                .list()
+                .size();
+    }
 }

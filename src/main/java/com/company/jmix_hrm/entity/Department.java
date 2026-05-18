@@ -7,6 +7,7 @@ import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -31,6 +32,7 @@ public class Department {
     private UUID departmentId;
 
     @NotNull(message = "DEPARTMENT NAME IS REQUIRED")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "DEPARTMENT NAME CANNOT CONTAIN SPECIAL CASE CHARACTERS")
     @Column(name = "DEPARTMENT_NAME", nullable = false)
     private String departmentName;
 

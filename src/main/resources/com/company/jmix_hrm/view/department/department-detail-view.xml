@@ -32,8 +32,8 @@
     <layout>
 
         <formLayout id="departmentFormContainer" dataContainer="departmentDc">
-            <textField id="departmentCodeField" property="departmentCode"/>
-            <textField id="departmentNameField" property="departmentName"/>
+            <textField id="departmentCodeField" property="departmentCode" valueChangeMode="EAGER"/>
+            <textField id="departmentNameField" property="departmentName" valueChangeMode="EAGER"/>
             <!--            <entityPicker property="company" id="companyField" >-->
             <!--                <actions>-->
             <!--                    <action id="entityLookupAction" type="entity_lookup" />-->
@@ -48,8 +48,12 @@
 
         <hbox>
             <!--            <button id="detailSaveCloseButton" action="detailSaveCloseAction" />-->
-            <button id="addDepartmentButton" icon="CREATE_ACTION" text="Save" focusShortcut="ALT-S" classNames="background-add button-style"/>
-            <button id="editDepartmentButton" icon="DETAIL_SAVE_ACTION" text="Save" focusShortcut="ALT-S" classNames="background-add button-style"/>
+            <button id="addDepartmentButton" icon="CREATE_ACTION"
+                    text="msg://com.company.jmix_hrm.view.department/saveButton" focusShortcut="ALT-S"
+                    classNames="background-add button-style"/>
+            <button id="editDepartmentButton" icon="DETAIL_SAVE_ACTION"
+                    text="msg://com.company.jmix_hrm.view.department/updateButton" focusShortcut="ALT-S"
+                    classNames="background-add button-style"/>
             <button id="detailCloseButton" action="detailCloseAction" focusShortcut="ALT-C"/>
         </hbox>
 

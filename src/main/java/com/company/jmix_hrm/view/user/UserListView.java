@@ -6,6 +6,8 @@ import com.company.jmix_hrm.view.main.MainView;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
@@ -17,6 +19,7 @@ import io.jmix.flowui.component.grid.DataGrid;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.view.*;
 import org.springframework.security.core.userdetails.UserDetails;
+
 
 @Route(value = "users", layout = MainView.class)
 @ViewController(id = "User.list")
@@ -65,17 +68,28 @@ public class UserListView extends StandardListView<User> {
     @Supply(to = "usersDataGrid.active", subject = "renderer")
     public Renderer<User> dataGridUserComponentRenderer() {
         return new ComponentRenderer<>(user -> {
-            Span span = uiComponents.create(Span.class);
+            Span parentSpan = uiComponents.create(Span.class);
+            Span childSpan = uiComponents.create(Span.class);
+            Icon icon = uiComponents.create(Icon.class);
+
+            parentSpan.getElement().getThemeList().add("badge");
+            parentSpan.setClassName("parent-span");
+            childSpan.getStyle().set("text-transform", "uppercase");
+            childSpan.getStyle().setFontWeight(Style.FontWeight.BOLD);
+            icon.setClassName("icon-size");
+
             if (Boolean.TRUE.equals(user.getActive())) {
-                span.setText("Active");
-                span.getStyle().setColor("#609966");
+                parentSpan.getElement().getThemeList().add("success");
+                childSpan.setText("Active");
+                icon.setIcon(VaadinIcon.CHECK_CIRCLE);
             } else {
-                span.getStyle().setColor("#E74646");
-                span.setText("Inactive");
+                parentSpan.getElement().getThemeList().add("error");
+                childSpan.setText("Inactive");
+                icon.setIcon(VaadinIcon.CLOSE_CIRCLE);
             }
-            span.getStyle().set("text-transform", "uppercase");
-            span.getStyle().setFontWeight(Style.FontWeight.BOLD);
-            return span;
+            parentSpan.add(icon);
+            parentSpan.add(childSpan);
+            return parentSpan;
         });
     }
 
@@ -108,5 +122,10 @@ public class UserListView extends StandardListView<User> {
                     .open();
         }
     }
+//
+//    @Install(to = "pagination", subject = "totalCountByRepositoryDelegate")
+//    private Long paginationTotalCountByRepositoryDelegate(final JmixDataRepositoryContext jmixDataRepositoryContext) {
+//        return employeeService.getUsersCount();
+//    }
 
 }
