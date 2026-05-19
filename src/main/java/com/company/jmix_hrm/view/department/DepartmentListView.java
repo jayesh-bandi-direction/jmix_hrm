@@ -36,7 +36,6 @@ import java.time.format.DateTimeFormatter;
 @DialogMode(width = "90%")
 public class DepartmentListView extends StandardListView<Department> {
 
-
     @ViewComponent
     private transient CollectionLoader<Department> departmentsDl;
 
@@ -66,7 +65,6 @@ public class DepartmentListView extends StandardListView<Department> {
         this.dialogWindows = dialogWindows;
         this.dataManager = dataManager;
     }
-
 
     //   Method to get the selected department
     public Department getSelectedDepartmentFromDataGrid() {
@@ -191,12 +189,11 @@ public class DepartmentListView extends StandardListView<Department> {
                 .withProperty("createdAt", department -> department.getCreatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyy' 'HH:mm:ss")));
     }
 
-
     //    To save the updated record on database when editor is closed
     @Install(to = "departmentsDataGrid.@editor", subject = "closeListener")
     public void onEditorCloseDepartment(EditorCloseEvent<Department> event) {
         Department department = event.getItem();
-        if (departmentService.isDepartmentUniqueInCompany(department.getDepartmentName(), department.getCompany().getCompanyCode())) {
+        if (departmentService.isDepartmentCodeUnique(department) && departmentService.isDepartmentNameUniqueInCompany(department)) {
             dataManager.save(department);
             dialogs.createMessageDialog().withHeader("Success").withText("Department Updated!").open();
         } else {

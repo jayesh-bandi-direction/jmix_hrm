@@ -9,6 +9,7 @@ import io.jmix.audit.EntityLog;
 import io.jmix.core.DataManager;
 import io.jmix.flowui.model.DataContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class DepartmentService {
     }
 
     //    Add department method
+    @Transactional
     public void addDepartment(Department newDepartment, Company company, DataContext dataContext) {
 //            Checking if the department which is being added, does it already exist in the db or not
         for (Department department : company.getDepartments()) {
@@ -43,7 +45,7 @@ public class DepartmentService {
 
 //      Data context tracks all the changes done in the entity field in the ui and then will call the data manager to save in the db
         dataContext.save();
-//        entityLog.registerCreate(newDepartment);
+        entityLog.registerCreate(newDepartment);
     }
 
     //    edit department method
@@ -57,7 +59,8 @@ public class DepartmentService {
     }
 
 
-//    remove department method
+    //    remove department method
+    @Transactional
     public void removeDepartment(Department department) {
 
 //        checking if employees exists in department
@@ -66,10 +69,11 @@ public class DepartmentService {
 
 //            remove if no employees exist in department
         dataManager.remove(department);
+        entityLog.registerDelete(department);
     }
 
-//    get department with employees method
-    public Department getDepartmentWithEmployees(UUID departmentId){
+    //    get department with employees method
+    public Department getDepartmentWithEmployees(UUID departmentId) {
         return dataManager.load(Department.class) // Specifying which entity to fetch
                 .id(departmentId) // Specifying the department id
                 .fetchPlan(department -> { // method used to specify fetch plan
@@ -83,7 +87,7 @@ public class DepartmentService {
                 .orElseThrow(() -> new DepartmentNotFoundException("Department Not Found With ID: " + departmentId));
     }
 
-    public Optional<Department> getDepartmentWithCode(String departmentCode){
+    public Optional<Department> getDepartmentWithCode(String departmentCode) {
         return dataManager.unconstrained()
                 .load(Department.class)
                 .query("select d from Department d where d.departmentCode = :departmentCode")
@@ -91,12 +95,37 @@ public class DepartmentService {
                 .optional();
     }
 
-    public boolean isDepartmentUniqueInCompany(String departmentName, String companyCode){
+    public boolean isDepartmentUniqueInCompany(String departmentName, String companyCode) {
         List<Department> departments = dataManager.load(Department.class)
                 .query("select d from Department d where d.company.companyCode= :companyCode")
                 .parameter("companyCode", companyCode)
                 .list();
         return departments.stream().filter(department -> department.getDepartmentName().equalsIgnoreCase(departmentName)).toList().isEmpty();
+    }
+
+    public boolean isDepartmentCodeUnique(Department department) {
+        Optional<Department> optionalDepartment = dataManager.load(Department.class)
+                .query("select d from Department d where d.departmentCode = :departmentCode")
+                .parameter("departmentCode", department.getDepartmentCode())
+                .optional();
+        if (optionalDepartment.isEmpty())
+            return true;
+        else {
+            return optionalDepartment.get().getDepartmentId().equals(department.getDepartmentId());
+        }
+    }
+
+    public boolean isDepartmentNameUniqueInCompany(Department department) {
+        Optional<Department> optionalDepartment = dataManager.load(Department.class)
+                .query("select d from Department d where d.departmentName = :departmentName and d.company.companyCode= :companyCode")
+                .parameter("departmentName", department.getDepartmentName())
+                .parameter("companyCode", department.getCompany().getCompanyCode())
+                .optional();
+        if (optionalDepartment.isEmpty())
+            return true;
+        else {
+            return optionalDepartment.get().getDepartmentId().equals(department.getDepartmentId());
+        }
     }
 
 }

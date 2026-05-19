@@ -8,10 +8,17 @@ import com.company.jmix_hrm.enums.Designation;
 import com.company.jmix_hrm.exception.EmployeeNotFoundException;
 import com.company.jmix_hrm.exception.UserNotFoundException;
 import io.jmix.core.DataManager;
+import io.jmix.email.EmailException;
+import io.jmix.email.EmailInfo;
+import io.jmix.email.EmailInfoBuilder;
+import io.jmix.email.Emailer;
 import io.jmix.flowui.model.DataContext;
+import jakarta.mail.internet.ContentType;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,13 +28,13 @@ public class EmployeeService {
 
     private final DataManager dataManager;
 
-    private final JavaMailSender javaMailSender;
+    private final Emailer emailer;
 
     private static final String BASE = "_base";
 
-    public EmployeeService(DataManager dataManager, JavaMailSender javaMailSender) {
+    public EmployeeService(DataManager dataManager, @Lazy Emailer emailer) {
         this.dataManager = dataManager;
-        this.javaMailSender = javaMailSender;
+        this.emailer = emailer;
     }
 
     //    get employee method
@@ -46,14 +53,35 @@ public class EmployeeService {
 
 //            updating the employee record in the db
         dataManager.save(employee);
+//
+//        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+//        simpleMailMessage.setFrom("jb.bandi.direction@gmail.com");
+//        simpleMailMessage.setTo(employee.getUser().getEmail());
+//        simpleMailMessage.setSubject("Unassigned From " + department);
+//        simpleMailMessage.setText(employee.getUser().getFirstName() + " " + employee.getUser().getLastName() + " Is Unassigned From " + department);
+//        javaMailSender.send(simpleMailMessage);
 
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("jb.bandi.direction@gmail.com");
-        simpleMailMessage.setTo(employee.getUser().getEmail());
-        simpleMailMessage.setSubject("Unassigned From " + department);
-        simpleMailMessage.setText(employee.getUser().getFirstName() + " " + employee.getUser().getLastName() + " Is Unassigned From " + department);
+        String firstName = employee.getUser().getFirstName();
+        String lastName = employee.getUser().getLastName();
 
-        javaMailSender.send(simpleMailMessage);
+        EmailInfo emailInfo = EmailInfoBuilder.create()
+                .setFrom("jb.bandi.direction@gmail.com")
+                .setAddresses(employee.getUser().getEmail())
+                .setSubject("[Notification] Department Unassignment Update")
+                .setBodyContentType("text/plain; charset=UTF-8")
+                .setBody("Dear " + firstName + " " + lastName + ",\n\n" +
+                        "This is to notify you that you have been unassigned from the " + department + " department.\n\n" +
+                        "Best regards,\n" +
+                        "System Administrator")
+                .setImportant(false)
+                .build();
+
+        try {
+            emailer.sendEmail(emailInfo);
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     //    get user method

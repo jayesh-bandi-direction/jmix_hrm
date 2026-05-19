@@ -62,6 +62,7 @@
             </startSlot>
         </hbox>
         <dataGrid id="usersDataGrid"
+                  classNames="custom-users-grid"
                   width="100%"
                   columnReorderingAllowed="true"
                   minHeight="20em"

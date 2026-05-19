@@ -23,31 +23,32 @@ repositories {
 
 dependencies {
 
-//    audit dependency
+//    Add on - Email Sending
+    implementation 'io.jmix.email:jmix-email-flowui-starter'
+    implementation 'io.jmix.email:jmix-email-starter'
+
+//    Add on - Audit
     implementation 'io.jmix.audit:jmix-audit-flowui-starter'
     implementation 'io.jmix.audit:jmix-audit-starter'
-
 
 //    Add on - Italian Translation
     implementation 'io.jmix.translations:jmix-translations-it'
 
-
 //    Add on - LDAP
     implementation 'io.jmix.ldap:jmix-ldap-starter'
 
-//    Add on - German translation
+//    Add on - German Translation
     implementation 'io.jmix.translations:jmix-translations-de'
 
-//    Add on - Grid Export Actions
+//    Add on - Grid Export Action
     implementation 'io.jmix.gridexport:jmix-gridexport-flowui-starter'
 
 //    Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-//    lombok
+//    Lombok
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
-
 
     implementation 'io.jmix.core:jmix-core-starter'
     implementation 'io.jmix.data:jmix-eclipselink-starter'
@@ -65,7 +66,7 @@ dependencies {
 
     runtimeOnly 'org.hsqldb:hsqldb'
 
-//    PostgreSQL driver
+//    Postgresql driver
     runtimeOnly 'org.postgresql:postgresql:42.7.10'
 
 // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j

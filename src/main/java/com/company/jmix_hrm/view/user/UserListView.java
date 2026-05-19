@@ -45,6 +45,8 @@ public class UserListView extends StandardListView<User> {
 
     @ViewComponent
     private JmixButton customAddButton;
+    @ViewComponent
+    private JmixButton Excel;
 
     public UserListView(UiComponents uiComponents, EmployeeService employeeService, ViewNavigators viewNavigators, Notifications notifications, CurrentAuthentication currentAuthentication, DialogWindows dialogWindows) {
         this.uiComponents = uiComponents;
@@ -62,6 +64,7 @@ public class UserListView extends StandardListView<User> {
         User currentUserDetails = employeeService.getEmployeeDepartmentCompanyUser(currentUser.getId());
         if (currentUserDetails.getEmployee() != null && currentUserDetails.getEmployee().getDesignation() != null && currentUserDetails.getEmployee().getDesignation().getId().equals("Trainee Software Engineer")) {
             customAddButton.setVisible(false);
+            Excel.setVisible(false);
         }
     }
 
