@@ -8,24 +8,35 @@ import com.company.jmix_hrm.service.DepartmentService;
 import com.company.jmix_hrm.service.EmployeeService;
 import com.company.jmix_hrm.view.department.DepartmentListView;
 import com.company.jmix_hrm.view.main.MainView;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.router.Route;
 import io.jmix.core.DataManager;
+import io.jmix.flowui.Dialogs;
 import io.jmix.flowui.Notifications;
 import io.jmix.flowui.ViewNavigators;
-import io.jmix.flowui.component.PaginationComponent;
 import io.jmix.flowui.component.grid.DataGrid;
-import io.jmix.flowui.component.pagination.SimplePagination;
-import io.jmix.flowui.data.pagination.PaginationDataLoader;
+import io.jmix.flowui.download.Downloader;
+import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.view.*;
 import io.jmix.gridexportflowui.action.ExcelExportAction;
 import io.jmix.gridexportflowui.action.JsonExportAction;
 import lombok.Setter;
 
+import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -72,12 +83,18 @@ public class EmployeeDtoListView extends StandardListView<EmployeeDto> {
 
     private final transient EmployeeService employeeService;
 
-    public EmployeeDtoListView(ViewNavigators viewNavigators, Notifications notifications, DataManager dataManager, DepartmentService departmentService, EmployeeService employeeService) {
+    private final transient Downloader downloader;
+
+    private final transient Dialogs dialogs;
+
+    public EmployeeDtoListView(ViewNavigators viewNavigators, Notifications notifications, DataManager dataManager, DepartmentService departmentService, EmployeeService employeeService, Downloader downloader, Dialogs dialogs) {
         this.viewNavigators = viewNavigators;
         this.notifications = notifications;
         this.dataManager = dataManager;
         this.departmentService = departmentService;
         this.employeeService = employeeService;
+        this.downloader = downloader;
+        this.dialogs = dialogs;
     }
 
     //    this event will get trigger and the method will be executed
@@ -175,6 +192,77 @@ public class EmployeeDtoListView extends StandardListView<EmployeeDto> {
     public void onReadyEmployeeDtoListView(ReadyEvent event) {
         excelExportAction.setFileName(departmentLabel.getText() + "_Employees");
         jsonExportAction.setFileName(departmentLabel.getText() + "_Employees");
+    }
+
+    @Subscribe(id = "pdfDownloadButton", subject = "clickListener")
+    public void onPdfDownloadButtonClick(final ClickEvent<JmixButton> event) throws IOException {
+
+        try {
+
+//            ByteArrayOutputStream is used to write on memory (RAM)
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            PdfWriter writer = new PdfWriter(outputStream);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            PdfFont headingFont = PdfFontFactory.createFont(StandardFonts.COURIER_BOLD);
+            PdfFont descriptionFont = PdfFontFactory.createFont(StandardFonts.COURIER);
+
+            Paragraph dateText = new Paragraph("Date: " + LocalDate.now()).setFont(headingFont).setFontSize(15);
+            Paragraph departmentText = new Paragraph("Department: " + departmentLabel.getText()).setFont(headingFont).setFontSize(15);
+            Paragraph companyText = new Paragraph("Company: " + companyLabel.getText()).setFont(headingFont).setFontSize(15);
+
+            float[] columnWidths = {100F, 100F, 100F, 60F, 200F};
+            Table table = new Table(columnWidths);
+
+            Cell firstNameCellHeader = new Cell().add(new Paragraph("FirstName").setFont(descriptionFont).setFontSize(12).setBold());
+            Cell lastNameCellHeader = new Cell().add(new Paragraph("LastName").setFont(descriptionFont).setFontSize(12).setBold());
+            Cell employeeCodeCellHeader = new Cell().add(new Paragraph("Employee Code").setFont(descriptionFont).setFontSize(12).setBold());
+            Cell genderCellHeader = new Cell().add(new Paragraph("Gender").setFont(descriptionFont).setFontSize(12).setBold());
+            Cell designationCellHeader = new Cell().add(new Paragraph("Designation").setFont(descriptionFont).setFontSize(12).setBold());
+
+            table.addHeaderCell(firstNameCellHeader);
+            table.addHeaderCell(lastNameCellHeader);
+            table.addHeaderCell(employeeCodeCellHeader);
+            table.addHeaderCell(genderCellHeader);
+            table.addHeaderCell(designationCellHeader);
+
+            List<EmployeeDto> employeeDtoList = employeesDtoDc.getItems();
+
+            for (EmployeeDto employeeDto : employeeDtoList) {
+                Cell firstNameCellValue = new Cell().add(new Paragraph(employeeDto.getFirstname() != null ? employeeDto.getFirstname() : "").setFont(descriptionFont).setFontSize(12));
+                Cell lastNameCellValue = new Cell().add(new Paragraph(employeeDto.getLastname() != null ? employeeDto.getLastname() : "").setFont(descriptionFont).setFontSize(12));
+                Cell employeeCodeCellValue = new Cell().add(new Paragraph(employeeDto.getEmployeeCode() != null ? employeeDto.getEmployeeCode() : "").setFont(descriptionFont).setFontSize(12));
+                Cell genderCellValue = new Cell().add(new Paragraph(employeeDto.getGender() != null ? employeeDto.getGender() : "").setFont(descriptionFont).setFontSize(12));
+                Cell designationCellValue = new Cell().add(new Paragraph(employeeDto.getDesignation() != null ? employeeDto.getDesignation() : "").setFontSize(12).setFont(descriptionFont));
+
+                table.addCell(firstNameCellValue);
+                table.addCell(lastNameCellValue);
+                table.addCell(employeeCodeCellValue);
+                table.addCell(genderCellValue);
+                table.addCell(designationCellValue);
+            }
+
+
+            document.add(dateText);
+            document.add(departmentText);
+            document.add(companyText);
+
+            document.add(new Paragraph());
+            document.add(new Paragraph());
+            document.add(new Paragraph());
+
+            document.add(table);
+
+            document.close();
+
+            downloader.download(() -> new ByteArrayInputStream(outputStream.toByteArray()), departmentLabel.getText() + "_Employees.pdf");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

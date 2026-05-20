@@ -23,6 +23,12 @@ repositories {
 
 dependencies {
 
+//    IText PDF
+// The modern core layout engine
+    implementation 'com.itextpdf:layout:8.0.4'
+// The modern PDF kernel
+    implementation 'com.itextpdf:kernel:8.0.4'
+
 //    Add on - Email Sending
     implementation 'io.jmix.email:jmix-email-flowui-starter'
     implementation 'io.jmix.email:jmix-email-starter'

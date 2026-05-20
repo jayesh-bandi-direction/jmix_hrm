@@ -35,12 +35,13 @@ public interface ManagerResourceRole {
     @EntityPolicy(entityClass = EmployeeDto.class, actions = EntityPolicyAction.ALL)
 //    If we don't specify the attribute policy then even though we have access to entity we will not be able to see the records
 //    @EntityAttributePolicy(entityClass = User.class, attributes = {"active", "employee"}, action = EntityAttributePolicyAction.MODIFY)
-//    @EntityAttributePolicy(entityClass = User.class, attributes = {"username", "firstName", "lastName", "email", "company"}, action = EntityAttributePolicyAction.VIEW)
+//    @EntityAttributePolicy(entityClass = User.class, attributes = {"username", "firstName", "lastName", "company"}, action = EntityAttributePolicyAction.VIEW)
 //    @EntityAttributePolicy(entityClass = Employee.class, attributes = {"designation", "manager", "department"}, action = EntityAttributePolicyAction.MODIFY)
 //    @EntityAttributePolicy(entityClass = Employee.class, attributes = {"dateOfBirth", "gender", "employeeCode"}, action = EntityAttributePolicyAction.VIEW)
     @EntityAttributePolicy(entityClass = User.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityAttributePolicy(entityClass = Employee.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityAttributePolicy(entityClass = Department.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+//    @EntityAttributePolicy(entityClass = Department.class, attributes = {"departmentCode"}, action = EntityAttributePolicyAction.MODIFY)
     @EntityAttributePolicy(entityClass = Company.class, attributes = "*", action = EntityAttributePolicyAction.VIEW)
     @EntityAttributePolicy(entityClass = EmployeeDto.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     void managerEntity();

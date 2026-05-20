@@ -26,8 +26,7 @@ public interface TraineeResourceRole {
 
     //    @ViewPolicy & @MenuPolicy are used to specify which screen and menu is accessible to the user
     @MenuPolicy(menuIds = "userMenu")
-    @ViewPolicy(viewIds = "User.list")
-    @ViewPolicy(viewClasses = UserDetailView.class)
+    @ViewPolicy(viewIds = {"User.list","User.detail"})
     void screens();
 
     //    @EntityPolicy & @EntityAttributePolicy are used to specify which entity user can access and can modify

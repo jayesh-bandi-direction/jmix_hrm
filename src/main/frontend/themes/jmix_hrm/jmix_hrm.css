@@ -38,6 +38,10 @@
 .background-json { color: #4f46e5; border: 1.5px solid #4f46e5; background-color: transparent; }
 .background-json:hover { background-color: #4f46e5; color: white; }
 
+/* PDF Export */
+.background-pdf { color: #0d6efd; border: 1.5px solid #0d6efd; background-color: transparent; }
+.background-pdf:hover { background-color: #0d6efd; color: white; }
+
 /* Remove / Delete */
 .background-remove { color: #ef4444; border: 1.5px solid #ef4444; background-color: transparent; }
 .background-remove:hover { background-color: #ef4444; color: white; }

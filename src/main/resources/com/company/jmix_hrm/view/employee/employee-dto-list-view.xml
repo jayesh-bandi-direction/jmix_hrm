@@ -24,6 +24,9 @@
                 </hbox>
             </startSlot>
             <endSlot>
+                <button id="pdfDownloadButton" focusShortcut="ALT-P"
+                        icon="vaadin:file-text" text="msg://Pdf"
+                        classNames="button-style background-pdf" />
                 <button id="excelDownloadButton" icon="EXCEL_EXPORT_ACTION"
                         action="employeesDtoDataGrid.excelExportAction" text="msg://excelButton"
                         classNames="button-style background-excel" focusShortcut="ALT-E"/>
