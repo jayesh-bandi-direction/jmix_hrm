@@ -243,23 +243,17 @@ public class EmployeeDtoListView extends StandardListView<EmployeeDto> {
                 table.addCell(genderCellValue);
                 table.addCell(designationCellValue);
             }
-
-
             document.add(dateText);
             document.add(departmentText);
             document.add(companyText);
-
             document.add(new Paragraph());
             document.add(new Paragraph());
             document.add(new Paragraph());
-
             document.add(table);
 
             document.close();
 
             downloader.download(() -> new ByteArrayInputStream(outputStream.toByteArray()), departmentLabel.getText() + "_Employees.pdf");
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

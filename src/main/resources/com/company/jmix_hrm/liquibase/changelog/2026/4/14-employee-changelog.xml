@@ -14,12 +14,12 @@
             </column>
 
             <column name="EMPLOYEE_CODE" type="varchar(255)">
-                <constraints nullable="false" unique="true" />
+                <constraints nullable="false" unique="true"/>
             </column>
 
-            <column name="DATE_OF_BIRTH" type="datetime" />
+            <column name="DATE_OF_BIRTH" type="datetime"/>
 
-            <column name="DEPARTMENT_ID" type="uuid" />
+            <column name="DEPARTMENT_ID" type="uuid"/>
 
             <column name="USER_ID" type="uuid">
                 <constraints nullable="false" unique="true"/>
@@ -54,10 +54,10 @@
 
     <changeSet id="3" author="Sameet">
         <addColumn tableName="EMPLOYEE">
-            <column name="GENDER" type="varchar(255)" />
+            <column name="GENDER" type="varchar(255)"/>
         </addColumn>
         <addColumn tableName="EMPLOYEE">
-            <column name="DESIGNATION" type="varchar(255)" />
+            <column name="DESIGNATION" type="varchar(255)"/>
         </addColumn>
     </changeSet>
 
@@ -71,5 +71,26 @@
                                  referencedColumnNames="EMPLOYEE_ID"/>
     </changeSet>
 
+    <changeSet id="6" author="Jayesh">
+        <addColumn tableName="employee">
+            <column name="profile_picture" type="varchar(1024)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="7" author="jmix_hrm">
+        <dropColumn tableName="EMPLOYEE" columnName="PROFILE_PICTURE" />
+        <addColumn tableName="EMPLOYEE">
+            <column name="PROFILE_PICTURE"
+                    type="blob"/>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="8" author="Jayesh">
+        <dropColumn tableName="EMPLOYEE" columnName="PROFILE_PICTURE" />
+        <addColumn tableName="EMPLOYEE">
+            <column name="PROFILE_PICTURE"
+                    type="bytea"/>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

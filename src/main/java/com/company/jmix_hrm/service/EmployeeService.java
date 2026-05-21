@@ -76,11 +76,12 @@ public class EmployeeService {
                 .setImportant(false)
                 .build();
 
-        try {
-            emailer.sendEmail(emailInfo);
-        } catch (EmailException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            emailer.sendEmail(emailInfo);
+//        } catch (EmailException e) {
+//            throw new RuntimeException(e);
+//        }
+        emailer.sendEmailAsync(emailInfo);
 
     }
 

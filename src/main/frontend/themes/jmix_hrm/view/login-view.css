@@ -2,4 +2,8 @@
 
 .jmix-login-main-layout {
   background-color: var(--lumo-shade-5pct);
+  background-image: url("https://t3.ftcdn.net/jpg/19/15/80/10/360_F_1915801010_G40f3ciT9IONOue26fpupdWCo93qbgBw.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }

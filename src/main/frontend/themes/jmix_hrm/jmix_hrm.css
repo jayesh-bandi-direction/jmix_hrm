@@ -493,3 +493,15 @@
 #companiesDataGrid::part(cell)::selection {
     background-color: var(--lumo-primary-color-30pct);
 }
+
+.profile-picture{
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+}
+.profile-picture-div{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}

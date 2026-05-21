@@ -55,6 +55,9 @@ public class Employee {
     @JoinColumn(name = "USER_ID", nullable = false, unique = true)
     private User user;
 
+    @Column(name = "PROFILE_PICTURE", length = 1024)
+    private byte [] profilePicture;
+
     @CreatedDate
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;

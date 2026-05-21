@@ -6,9 +6,11 @@ import com.company.jmix_hrm.entity.User;
 import com.company.jmix_hrm.service.DepartmentService;
 import com.company.jmix_hrm.service.EmployeeService;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.server.StreamResource;
 import io.jmix.core.security.CurrentAuthentication;
 import io.jmix.flowui.component.grid.TreeDataGrid;
 import io.jmix.flowui.fragment.Fragment;
@@ -17,7 +19,7 @@ import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.view.Subscribe;
 import io.jmix.flowui.view.ViewComponent;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
 @FragmentDescriptor("main-fragment.xml")
@@ -59,6 +61,12 @@ public class MainFragment extends Fragment<HorizontalLayout> {
     @ViewComponent
     Tabs tabsContainer;
 
+    @ViewComponent
+    Image profilePictureImage;
+
+    @ViewComponent
+    private Div profilePictureDiv;
+
     private final transient EmployeeService employeeService;
 
     private final transient CurrentAuthentication currentAuthentication;
@@ -68,6 +76,7 @@ public class MainFragment extends Fragment<HorizontalLayout> {
     private static final String UNASSIGNED = "Unassigned";
 
     private static final String NOT_SPECIFIED = "Not Specified";
+
 
     public MainFragment(EmployeeService employeeService, CurrentAuthentication currentAuthentication, DepartmentService departmentService) {
         this.employeeService = employeeService;
@@ -96,6 +105,18 @@ public class MainFragment extends Fragment<HorizontalLayout> {
         employeeDepartmentValue.setText(userEmployee.getEmployee().getDepartment() == null ? UNASSIGNED : userEmployee.getEmployee().getDepartment().getDepartmentName());
         employeeCompanyValue.setText(userEmployee.getCompany() == null ? UNASSIGNED : userEmployee.getCompany().getCompanyName());
 
+//        Get the value of the profilePicture which is in bytes
+        byte[] imageBytes = userEmployee.getEmployee().getProfilePicture();
+//        Condition to check if the profile picture for logged-in user exists
+        if (imageBytes != null && imageBytes.length > 0) {
+//            StreamResource is used to convert the java data to url so that browser can understand and can be used to passed the value in src
+            StreamResource resource = new StreamResource("profile.png", () -> new ByteArrayInputStream(imageBytes));
+            profilePictureImage.setSrc(resource);
+            profilePictureDiv.setVisible(true);
+        }else {
+            profilePictureDiv.setVisible(false);
+        }
+
 //        Checking if there is employee object present for user and if the employee object has a role of manager
         if (userEmployee.getEmployee() != null && userEmployee.getEmployee().getManager() == null && userEmployee.getEmployee().getDepartment() != null) {
 //            Calling department service method which fetches the department object along with the employees and respective user object
@@ -119,9 +140,11 @@ public class MainFragment extends Fragment<HorizontalLayout> {
         if (optionalTabId.isPresent() && optionalTabId.get().equals("treeDataGridTab")) {
             managerEmployeesTreeDataGrid.setVisible(true);
             profileDiv.setVisible(false);
+            profilePictureDiv.setVisible(false);
         } else {
             managerEmployeesTreeDataGrid.setVisible(false);
             profileDiv.setVisible(true);
+            profilePictureDiv.setVisible(true);
         }
     }
 

@@ -62,6 +62,13 @@
             <checkbox id="activeField" property="active"/>
             <textField id="employeeCodeField" property="employee.employeeCode" valueChangeMode="EAGER"/>
             <datePicker id="employeeDateOfBirthField" property="employee.dateOfBirth"/>
+
+            <fileUploadField id="profilePictureField"
+                             dataContainer="userDc"
+                             property="employee.profilePicture"
+                             fileNameVisible="true"
+                             clearButtonVisible="true"/>
+
             <radioButtonGroup itemsEnum="com.company.jmix_hrm.entity.Gender" property="employee.gender"
                               id="genderField"/>
             <comboBox id="employeeDesignationField" property="employee.designation"/>

@@ -23,6 +23,10 @@ repositories {
 
 dependencies {
 
+//    Add on - Quartz
+    implementation 'io.jmix.quartz:jmix-quartz-flowui-starter'
+    implementation 'io.jmix.quartz:jmix-quartz-starter'
+
 //    IText PDF
 // The modern core layout engine
     implementation 'com.itextpdf:layout:8.0.4'
