@@ -23,6 +23,12 @@ repositories {
 
 dependencies {
 
+//    Add on - Authorization Server
+    implementation 'io.jmix.authserver:jmix-authserver-starter'
+
+//    Add on - REST API
+    implementation 'io.jmix.rest:jmix-rest-starter'
+
 //    Add on - Quartz
     implementation 'io.jmix.quartz:jmix-quartz-flowui-starter'
     implementation 'io.jmix.quartz:jmix-quartz-starter'

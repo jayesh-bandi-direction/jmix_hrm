@@ -73,7 +73,7 @@ public class DepartmentService {
     }
 
     //    get department with employees method
-    public Department getDepartmentWithEmployees(UUID departmentId) {
+    public Department getDepartmentEmployees(UUID departmentId) {
         return dataManager.load(Department.class) // Specifying which entity to fetch
                 .id(departmentId) // Specifying the department id
                 .fetchPlan(department -> { // method used to specify fetch plan
@@ -87,7 +87,7 @@ public class DepartmentService {
                 .orElseThrow(() -> new DepartmentNotFoundException("Department Not Found With ID: " + departmentId));
     }
 
-    public Optional<Department> getDepartmentWithCode(String departmentCode) {
+    public Optional<Department> getDepartmentByCode(String departmentCode) {
         return dataManager.unconstrained()
                 .load(Department.class)
                 .query("select d from Department d where d.departmentCode = :departmentCode")

@@ -237,7 +237,7 @@ public class UserDetailView extends StandardDetailView<User> {
 
 //        Current User Details
         User currentUser = (User) currentAuthentication.getUser();
-        User currentUserDetails = employeeService.getEmployeeDepartmentCompanyUser(currentUser.getId());
+        User currentUserDetails = employeeService.getUserDataInDetail(currentUser.getId());
 
 //        Fetching All The Managers Of The Current Employee Company
         List<Employee> managers = employeeService.getManagers(currentUserDetails.getCompany());

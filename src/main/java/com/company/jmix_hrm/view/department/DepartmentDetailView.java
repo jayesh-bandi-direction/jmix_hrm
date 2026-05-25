@@ -87,7 +87,7 @@ public class DepartmentDetailView extends StandardDetailView<Department> {
 //        Checking if the user is admin
         if (!user.getUsername().equals("admin")) {
 //            if not then fetch all the values of the user
-            User userEmployeeDepartmentCompany = employeeService.getEmployeeDepartmentCompanyUser(user.getId());
+            User userEmployeeDepartmentCompany = employeeService.getUserDataInDetail(user.getId());
 //            checking the role of user, if manager then set the company
             if (userEmployeeDepartmentCompany.getEmployee().getDesignation().getId().equals("Manager")) {
                 companyComboBox.setValue(userEmployeeDepartmentCompany.getEmployee().getDepartment().getCompany());
@@ -111,7 +111,7 @@ public class DepartmentDetailView extends StandardDetailView<Department> {
         } else {
             try {
 //                Calling service method to get Company and if not found then will throw an exception
-                Company company = companyService.getCompanyBy(department.getCompany().getCompanyId());
+                Company company = companyService.getCompanyById(department.getCompany().getCompanyId());
 
 //                to get the currently opened view data context
                 DataContext dataContext = getViewData().getDataContext();
@@ -147,7 +147,7 @@ public class DepartmentDetailView extends StandardDetailView<Department> {
 
         try {
 //            Service method to get company by id and if not found then exception is thrown
-            Company company = companyService.getCompanyBy(department.getCompany().getCompanyId());
+            Company company = companyService.getCompanyById(department.getCompany().getCompanyId());
 
 //            Service method to edit the department and if existing with same name or code then throw exception
             departmentService.editDepartment(department, company, getViewData().getDataContext());

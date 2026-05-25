@@ -57,7 +57,7 @@ public class UserSynchronizationWithLdap extends AbstractLdapUserDetailsSynchron
 //            fetching the department by departmentCode
             String departmentNumber = ctx.getStringAttribute("departmentNumber");
             logger.info("Department Number: {}", departmentNumber);
-            Optional<Department> optionalDepartment = departmentService.getDepartmentWithCode(departmentNumber);
+            Optional<Department> optionalDepartment = departmentService.getDepartmentByCode(departmentNumber);
 
             logger.info("Department Present: {}", optionalDepartment.isPresent());
 

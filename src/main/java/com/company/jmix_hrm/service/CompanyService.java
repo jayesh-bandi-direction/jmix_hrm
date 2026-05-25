@@ -31,7 +31,7 @@ public class CompanyService {
     }
 
     //    To get Company by ID from database
-    public Company getCompanyBy(UUID companyId) {
+    public Company getCompanyById(UUID companyId) {
         return dataManager.load(Company.class)
                 .id(companyId)
                 .optional()

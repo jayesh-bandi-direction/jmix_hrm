@@ -8,15 +8,11 @@ import com.company.jmix_hrm.enums.Designation;
 import com.company.jmix_hrm.exception.EmployeeNotFoundException;
 import com.company.jmix_hrm.exception.UserNotFoundException;
 import io.jmix.core.DataManager;
-import io.jmix.email.EmailException;
 import io.jmix.email.EmailInfo;
 import io.jmix.email.EmailInfoBuilder;
 import io.jmix.email.Emailer;
 import io.jmix.flowui.model.DataContext;
-import jakarta.mail.internet.ContentType;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -98,7 +94,7 @@ public class EmployeeService {
     }
 
     //    method to get user, employee, department, company
-    public User getEmployeeDepartmentCompanyUser(UUID userId) {
+    public User getUserDataInDetail(UUID userId) {
         return dataManager.load(User.class)
                 .id(userId)
                 .fetchPlan(userFp -> {

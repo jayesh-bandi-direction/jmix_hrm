@@ -86,7 +86,7 @@ public class DepartmentDtoListView extends StandardListView<DepartmentDto> {
 
         try {
 //            Calling the service method
-            Company company = companyService.getCompanyBy(companyId);
+            Company company = companyService.getCompanyById(companyId);
 
             List<DepartmentDto> departmentDtoList = new ArrayList<>();
             for (Department department : company.getDepartments()) {

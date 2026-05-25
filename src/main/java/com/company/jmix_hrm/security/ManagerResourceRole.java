@@ -18,7 +18,7 @@ import io.jmix.securityflowui.role.annotation.ViewPolicy;
 @ResourceRole(
         name = "Manager: CRUD Employee/Department",
         code = ManagerResourceRole.CODE,
-        scope = SecurityScope.UI // UI - used to specify what user can see and do on when interacting with application on their browser
+        scope = {SecurityScope.UI, SecurityScope.API}// UI - used to specify what user can see and do on when interacting with application on their browser
 )
 public interface ManagerResourceRole {
 

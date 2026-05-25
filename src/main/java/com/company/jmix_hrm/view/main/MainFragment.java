@@ -94,7 +94,7 @@ public class MainFragment extends Fragment<HorizontalLayout> {
         User user = (User) userDetails;
 
 //        Calling the employee service method to fetch all the details of the logged-in user (employee, department and company)
-        User userEmployee = employeeService.getEmployeeDepartmentCompanyUser(user.getId());
+        User userEmployee = employeeService.getUserDataInDetail(user.getId());
 
         employeeNameValue.setText(userEmployee.getFirstName() == null ? NOT_SPECIFIED : userEmployee.getFirstName() + " " + userEmployee.getLastName());
         employeeCodeValue.setText(userEmployee.getEmployee() == null ? UNASSIGNED : userEmployee.getEmployee().getEmployeeCode());
@@ -120,7 +120,7 @@ public class MainFragment extends Fragment<HorizontalLayout> {
 //        Checking if there is employee object present for user and if the employee object has a role of manager
         if (userEmployee.getEmployee() != null && userEmployee.getEmployee().getManager() == null && userEmployee.getEmployee().getDepartment() != null) {
 //            Calling department service method which fetches the department object along with the employees and respective user object
-            Department department = departmentService.getDepartmentWithEmployees(userEmployee.getEmployee().getDepartment().getDepartmentId());
+            Department department = departmentService.getDepartmentEmployees(userEmployee.getEmployee().getDepartment().getDepartmentId());
 //            Assigning the employees present in the department in data loader
             managerEmployeesDc.setItems(department.getEmployees());
             profileDiv.setVisible(true);

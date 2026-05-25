@@ -139,7 +139,7 @@ public class EmployeeDtoListView extends StandardListView<EmployeeDto> {
     @Subscribe
     public void onBeforeShowEmployee(BeforeShowEvent event) {
 //        calling the department service and assigning the department
-        Department department = departmentService.getDepartmentWithEmployees(departmentId);
+        Department department = departmentService.getDepartmentEmployees(departmentId);
 
 //        calling the set method to set the values in the collection container
         setEmployeesDtoInDataContainer(department);
@@ -171,7 +171,7 @@ public class EmployeeDtoListView extends StandardListView<EmployeeDto> {
 
                 employeeService.unassignEmployee(employee);
 
-                Department department = departmentService.getDepartmentWithEmployees(departmentId);
+                Department department = departmentService.getDepartmentEmployees(departmentId);
                 setEmployeesDtoInDataContainer(department);
 
 //            Notification to be displayed on successfully unassignment
